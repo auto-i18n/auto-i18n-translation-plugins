@@ -41,6 +41,9 @@ export class VolcengineTranslator extends Translator {
         super({
             name: '火山引擎ai翻译',
             fetchMethod: async (text, fromKey, toKey, separator) => {
+                if (Array.isArray(text)) {
+                    return
+                }
                 let salt = new Date().getTime()
                 const textArr = text.split(separator)
                 const sourceMap = Object.fromEntries(textArr.map(text => [generateId(text), text]))

@@ -54,41 +54,49 @@ export class YoudaoTranslator extends Translator {
     }
 
     constructor(option: YoudaoTranslatorOption) {
-        super({
-            name: '有道翻译',
-            fetchMethod: async (text, fromKey, toKey) => {
-                let salt = new Date().getTime()
-                let curTime = Math.round(new Date().getTime() / 1000)
-                let str = option.appId + this.truncate(text) + salt + curTime + option.appKey
-                let sign = CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex)
+        super(
+            {
+                name: '有道翻译',
+                fetchMethod: async (text, fromKey, toKey) => {
+                    if (typeof text === 'string') {
+                        return
+                    }
 
-                const data = {
-                    q: text,
-                    appKey: option.appId,
-                    salt,
-                    from: this.getTranslateKey(fromKey),
-                    to: this.getTranslateKey(toKey),
-                    sign,
-                    signType: 'v3',
-                    curtime: curTime,
-                    ...(option.insertOption || {})
-                }
-                const response = await axios.post('https://openapi.youdao.com/api', data, {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                    },
-                    proxy: option.proxy
-                })
-                // 请求成功，返回响应数据
-                return response.data.translation?.[0] || ''
+                    let salt = new Date().getTime()
+                    let curTime = Math.round(new Date().getTime() / 1000)
+                    let str =
+                        option.appId + this.truncate(text.join('')) + salt + curTime + option.appKey
+                    let sign = CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex)
+
+                    const data = {
+                        q: text,
+                        appKey: option.appId,
+                        salt,
+                        from: this.getTranslateKey(fromKey),
+                        to: this.getTranslateKey(toKey),
+                        sign,
+                        signType: 'v3',
+                        curtime: curTime,
+                        ...(option.insertOption || {})
+                    }
+                    const response = await axios.post('https://openapi.youdao.com/v2/api', data, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                        },
+                        proxy: option.proxy
+                    })
+                    // 请求成功，返回响应数据
+                    return response.data.translation?.[0] || ''
+                },
+                onError: (error, cb) => {
+                    cb(error)
+                    console.error(
+                        '请前往有道翻译官方申请翻译key，默认会有50的额度，并请检查额度是否充足。'
+                    )
+                },
+                interval: option.interval ?? 1000
             },
-            onError: (error, cb) => {
-                cb(error)
-                console.error(
-                    '请前往有道翻译官方申请翻译key，默认会有50的额度，并请检查额度是否充足。'
-                )
-            },
-            interval: option.interval ?? 1000
-        })
+            false // 有道使用批量翻译不携带分割符
+        )
     }
 }

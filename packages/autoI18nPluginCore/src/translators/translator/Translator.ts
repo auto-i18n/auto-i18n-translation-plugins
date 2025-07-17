@@ -12,11 +12,11 @@ export interface TranslatorOption {
      * @returns 翻译后的文本
      */
     fetchMethod: (
-        text: string,
+        text: string | string[],
         fromKey: string,
         toKey: string,
         separator: string
-    ) => Promise<string>
+    ) => Promise<string | undefined | string[]>
     name: string
     /** 单次最大翻译文本长度 */
     maxChunkSize?: number
@@ -34,8 +34,11 @@ export interface TranslatorOption {
 export class Translator {
     public option: Required<TranslatorOption>
 
-    constructor(option: TranslatorOption) {
+    public withSeparator: boolean
+
+    constructor(option: TranslatorOption, withSeparator: boolean = true) {
         this.option = this.getResultOption(option)
+        this.withSeparator = withSeparator
     }
 
     private defaultErrorHandler = (error: unknown) => {
@@ -77,8 +80,8 @@ export class Translator {
         }
     }
 
-    async translate(text: string, fromKey: string, toKey: string, separator: string) {
-        let result = ''
+    async translate(text: string | string[], fromKey: string, toKey: string, separator: string) {
+        let result = '' as string | string[] | undefined
         try {
             result = await this.option.fetchMethod(text, fromKey, toKey, separator)
         } catch (error) {

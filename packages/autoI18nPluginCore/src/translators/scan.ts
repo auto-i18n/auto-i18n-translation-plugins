@@ -14,6 +14,9 @@ export class EmptyTranslator extends Translator {
         const resultOption: TranslatorOption = {
             name: '空翻译器',
             fetchMethod: async (text, _from, _to, separator) => {
+                if (Array.isArray(text)) {
+                    return
+                }
                 // 相当于把翻译结果统一设置为空串
                 const value = text.split(separator).fill('')
                 return value.join(separator)

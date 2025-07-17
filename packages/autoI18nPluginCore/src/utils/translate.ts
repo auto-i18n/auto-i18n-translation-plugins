@@ -101,7 +101,7 @@ export async function autoTranslate() {
     }
 
     // 初始化翻译结果存储结构
-    const newLangObjMap: Record<string, (string | number)[]> = {}
+    const newLangObjMap: Record<string, (string | number | undefined)[]> = {}
 
     // 遍历所有目标语言进行处理
     for (let langIndex = 0; langIndex < option.langKey.length; langIndex++) {
@@ -194,7 +194,7 @@ export function languageConfigCompletion(obj: any) {
  */
 export async function completionTranslateAndWriteConfigFile(
     langObj: Record<string, string>,
-    curLangObj: Record<string, string>,
+    curLangObj: Record<string, string | undefined>,
     translateKey: string
 ) {
     // 构建需要翻译的语言映射对象
@@ -249,16 +249,24 @@ export async function completionTranslateAndWriteConfigFile(
 // 分块翻译流程函数
 async function translateChunks(transLangObj: Record<string, string>, translateKey: string) {
     const { translator } = option
+
     // 获取分块后的文本列表
     const translationChunks = chunkUtils.createTextSplitter(
         Object.values(transLangObj),
-        translator.option.maxChunkSize
+        translator.option.maxChunkSize,
+        translator.withSeparator // 是否携带分割符
     )
+
     // 并行执行分块翻译
     const translatePromises = []
     for (let i = 0; i < translationChunks.length; i++) {
         translatePromises.push(
-            translator.translate(translationChunks[i], option.originLang, translateKey, SEPARATOR)
+            translator.translate(
+                translationChunks[i] as any,
+                option.originLang,
+                translateKey,
+                SEPARATOR
+            )
         )
     }
 
@@ -266,26 +274,31 @@ async function translateChunks(transLangObj: Record<string, string>, translateKe
     const chunkResults = await Promise.all(translatePromises)
     return chunkResults
         .map(item => {
-            // 提取分割逻辑到单独的函数中，提高代码复用性
-            const splitTranslation = (text: string, separatorRegex: RegExp) => {
-                return text.split(separatorRegex).map(v => v.trim())
-            }
+            // 如果是使用分隔符合并的字符串，那么这里要拆分分割符
+            if (translator.withSeparator) {
+                if (typeof item === 'string') {
+                    // 提取分割逻辑到单独的函数中，提高代码复用性
+                    const splitTranslation = (text: string, separatorRegex: RegExp) => {
+                        return text.split(separatorRegex).map(v => v.trim())
+                    }
 
-            // 分割符可能会被翻译，所以这里做了兼容处理
-            if (SPLIT_SEPARATOR_REGEX.test(item)) {
-                return splitTranslation(item, SPLIT_SEPARATOR_REGEX)
-            } else {
-                const lines = item.split('\n')
-                const separator = lines.find(line => line.length === 3)
-                let value: string[] = []
-                if (separator) {
-                    value = splitTranslation(item, new RegExp(`\\n${separator}\\n`))
+                    // 分割符可能会被翻译，所以这里做了兼容处理
+                    if (SPLIT_SEPARATOR_REGEX.test(item)) {
+                        return splitTranslation(item, SPLIT_SEPARATOR_REGEX)
+                    } else {
+                        const lines = item.split('\n')
+                        const separator = lines.find(line => line.length === 3)
+                        let value: string[] = []
+                        if (separator) {
+                            value = splitTranslation(item, new RegExp(`\\n${separator}\\n`))
+                        }
+                        const realList = value.filter(Boolean)
+                        if (realList.length > 1) {
+                            return realList
+                        }
+                        return splitTranslation(item, SPLIT_SEPARATOR_REGEX)
+                    }
                 }
-                const realList = value.filter(Boolean)
-                if (realList.length > 1) {
-                    return realList
-                }
-                return splitTranslation(item, SPLIT_SEPARATOR_REGEX)
             }
         })
         .flat()
