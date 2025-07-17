@@ -464,6 +464,13 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+
+### v1.1.6 (Recommended Version)
+
+-   Fixed issue where clearing whitespace before/after template strings caused mismatch between JSON and translation functions
+-   Fixed issue where Chinese brackets in interpolation caused interpolation to fail
+-   Added configuration cleanup functionality
+
 ### v1.1.5 (Recommended Version)
 
 -   Added support for interpolation translation
