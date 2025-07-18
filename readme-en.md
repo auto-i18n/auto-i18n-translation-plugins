@@ -37,6 +37,13 @@ pnpm run preview // Don't select React, contains too much English text
 
 ---
 
+## ❓ Common Issues
+
+[Documentation](https://juejin.cn/post/7483435518526062626).
+
+
+---
+
 ## 🌟 Quick Start 🚀
 
 ### 1️⃣ Install Plugin 📦
