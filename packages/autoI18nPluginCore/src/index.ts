@@ -1,6 +1,5 @@
-import { getLangObjByJSONFileWithLangKey, initLangFile } from './utils/file.ts'
-import { initLangObj, languageConfigCompletion } from './utils/translate.ts'
 import { checkOption, initOption, OptionInfo } from './option.ts'
+import { initLangFile } from './utils/file.ts'
 
 /*
  * @Author: xiaoshanwen
@@ -19,12 +18,12 @@ export * as filter from './filter'
  * @param optionInfo 用户提供的配置选项
  */
 export const initCore = async (optionInfo: OptionInfo) => {
-    const option = initOption(optionInfo)
+    initOption(optionInfo)
 
     if (!checkOption()) throw new Error('Invalid option configuration')
 
     initLangFile()
-    const originLangObj = getLangObjByJSONFileWithLangKey(option.originLang) // FIXME: 待优化
-    initLangObj(originLangObj)
-    await languageConfigCompletion(option.originLang)
+    // const originLangObj = getLangObjByJSONFileWithLangKey(option.originLang) // FIXME: 待优化
+    // initLangObj(originLangObj)
+    // await languageConfigCompletion(option.originLang)
 }

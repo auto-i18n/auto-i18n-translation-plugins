@@ -107,17 +107,14 @@ export function extractStrings(fileContent: string, regex: any) {
 
 /**
  * @description: 生成i8n翻译函数
- * @param {string} value
- * @param {boolean} isExpression
- * @param {string} key
- * @return {*}
+ * @return
  */
-export function createI18nTranslator(createOption: {
+export function createI18nTranslator<T extends boolean>(createOption: {
     value: string
-    isExpression?: boolean
+    isExpression?: T
     key?: string
     insertOption?: any
-}): any {
+}): T extends true ? Node : string {
     const { value, isExpression = false, key, insertOption } = createOption
 
     // 从全局配置对象 option 中获取命名空间

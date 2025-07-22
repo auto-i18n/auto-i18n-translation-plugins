@@ -6,11 +6,12 @@
  */
 import { baseUtils, splitUtils } from 'src/utils'
 import { TranslateTypeEnum } from 'src/enums'
+import { PluginObj } from '@babel/core'
 import * as types from '@babel/types'
 import { option } from 'src/option'
 
-export default function (insertOption: any) {
-    return function (path: any) {
+export default function (insertOption?: any): PluginObj['visitor']['StringLiteral'] {
+    return function (path) {
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
             return
         }
@@ -37,15 +38,19 @@ export default function (insertOption: any) {
             const extractFnName = baseUtils.extractFunctionName(parent)
 
             // 防止导入语句，只处理那些当前节点不是键值对的键的字符串字面量，调用语句判断当前调用语句是否包含需要过滤的调用语句
+            // TODO
             if (
-                parent?.callee?.property?.name === option.translateKey ||
+                ('callee' in parent &&
+                    'property' in parent.callee &&
+                    'name' in parent.callee.property &&
+                    parent.callee.property?.name === option.translateKey) ||
                 types.isImportDeclaration(parent) ||
-                parent.key === node ||
+                ('key' in parent && parent.key === node) ||
                 (types.isCallExpression(parent) &&
                     extractFnName &&
                     (option.excludedCall.includes(extractFnName) ||
-                        (extractFnName?.split('.')?.pop() &&
-                            option.excludedCall.includes(extractFnName?.split('.')?.pop() || ''))))
+                        (extractFnName.split('.').pop() &&
+                            option.excludedCall.includes(extractFnName.split('.').pop() || ''))))
             )
                 return
             let replaceNode

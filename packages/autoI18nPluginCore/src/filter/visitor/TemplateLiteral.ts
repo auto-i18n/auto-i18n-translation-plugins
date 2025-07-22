@@ -6,14 +6,15 @@
  */
 import { baseUtils, translateUtils } from 'src/utils'
 import { TranslateTypeEnum } from 'src/enums'
+import { PluginObj } from '@babel/core'
 import { option } from 'src/option'
 import types from '@babel/types'
 
 // 定义一个包含亚洲语言代码的数组
 const asianLangs = ['zh-cn', 'ja', 'ko']
 
-export default function (insertOption: any) {
-    return function (path: any) {
+export default function (insertOption?: any): PluginObj['visitor']['TemplateLiteral'] {
+    return function (path) {
         // 如果是半自动翻译，不做处理
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
             return

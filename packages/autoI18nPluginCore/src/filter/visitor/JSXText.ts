@@ -5,11 +5,12 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/filter/visitor/JSXText.ts
  */
 import { TranslateTypeEnum } from 'src/enums'
+import { PluginObj } from '@babel/core'
 import * as types from '@babel/types'
 import { baseUtils } from 'src/utils'
 import { option } from 'src/option'
 
-export default function (insertOption: any) {
+export default function (insertOption?: any): PluginObj['visitor']['JSXText'] {
     return function (path: any) {
         console.log('jsx text')
 

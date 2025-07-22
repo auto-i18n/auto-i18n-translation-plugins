@@ -18,7 +18,7 @@ export default function (insertOption?: any) {
     const callExpressionVisitor = CallExpressionFn(insertOption)
 
     // 返回一个函数，该函数返回包含访问器的对象
-    return function () {
+    return function (): babel.PluginObj {
         return {
             // 定义 Babel 访问器对象
             visitor: {

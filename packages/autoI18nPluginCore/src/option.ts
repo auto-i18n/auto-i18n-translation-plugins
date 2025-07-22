@@ -59,7 +59,7 @@ const DEFAULT_OPTION = {
     /** 翻译目标语言列表，默认包含英文 */
     targetLangList: ['en'],
 
-    /** 语言key，用于请求谷歌api和生成配置文件下对应语言的内容文件 */
+    /** 语言key，用于请求翻译api和生成配置文件下对应语言的内容文件 */
     langKey: [] as string[],
 
     /** 命名空间，防止全局命名冲突 */

@@ -5,8 +5,9 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/utils/translate.ts
  */
 
+import { getLangTranslateJSONFile, setLangTranslateJSONFile } from './file'
 import { option } from 'src/option'
-import * as fileUtils from './file'
+import { generateId } from './base'
 import Progress from 'progress'
 import { chunkUtils } from '.'
 
@@ -48,7 +49,6 @@ export function initLangObj(obj: LangObj) {
     }
 }
 
-// todo 类型修复
 /**
  * 自动生成多语言配置文件的核心方法
  *
@@ -67,96 +67,51 @@ export async function autoTranslate() {
 
     if (!enabled) return
 
-    // 初始化现有翻译文件缓存
-    const originLangObjMap: Record<string, any> = {}
+    /** index.json的内容对象 */
+    let jsonObj: Record<string, Record<string, string>> = {}
+    try {
+        jsonObj = JSON.parse(getLangTranslateJSONFile()) || {}
+        console.debug('🚀 ~ autoTranslate ~ jsonObj:', jsonObj)
+    } catch (e) {
+        jsonObj = {}
+    }
+    const { langKey, originLang } = option
 
-    // 加载所有语言的现有翻译内容
-    // 获取当前待翻译内容（深拷贝避免污染原始数据）
-    const currentLangObj = JSON.parse(JSON.stringify(getLangObj()))
-    option.langKey.forEach(lang => {
-        const keyMap = fileUtils.getLangObjByJSONFileWithLangKey(lang)
-        if (option.isClear) {
-            const list = Object.keys(keyMap).filter(key => currentLangObj[key])
-            const resMap: Record<string, any> = {}
-            list.forEach(key => {
-                resMap[key] = keyMap[key]
-            })
-            originLangObjMap[lang] = resMap
-        } else {
-            originLangObjMap[lang] = keyMap
-        }
-    })
+    /** 待翻译内容，key为目标语言，value为源语言数组 */
+    const transLangMap: Record<string, string[]> = {}
+    langKey.forEach(key => (transLangMap[key] = []))
 
-    // 筛选需要翻译的新增内容
-    const transLangObj: Record<string, string> = {}
-    Object.keys(currentLangObj).forEach(key => {
-        if (!originLangObjMap[option.originLang][key]) {
-            transLangObj[key] = currentLangObj[key]
-        }
-    })
+    for (const id in jsonObj) {
+        const langObj = jsonObj[id]
+        langKey.forEach(key => {
+            // 如果对象中不存在对应语言key表示需要翻译（空字符串表示不需要翻译）
+            if (!(key in langObj)) {
+                transLangMap[key].push(langObj[originLang])
+            }
+        })
+    }
 
-    // 无新内容提前退出
-    if (Object.keys(transLangObj).length === 0) {
+    if (Object.values(transLangMap).every(arr => !arr.length)) {
         console.info('✅ 当前没有需要翻译的新内容')
         return
     }
 
-    // 初始化翻译结果存储结构
-    const newLangObjMap: Record<string, (string | number)[]> = {}
-
     console.info('开始自动翻译...')
 
-    // 遍历所有目标语言进行处理
-    for (let langIndex = 0; langIndex < option.langKey.length; langIndex++) {
-        const currentLang = option.langKey[langIndex]
-
-        // 原始语言直接存储原文，读取扫出来的元素翻译内容
-        if (langIndex === 0) {
-            newLangObjMap[option.originLang] = Object.values(transLangObj)
-            continue
-        }
-
-        // ─── 分块翻译流程开始 ───
-        const translatedValues = await translateChunks(transLangObj, option.langKey[langIndex])
-        // ─── 分块翻译流程结束 ───=
-
-        // ─── 翻译结果校验 ───
-        if (translatedValues.length !== Object.keys(transLangObj).length) {
-            console.error(
-                '❌ 使用付费翻译时，请检查翻译API额度是否充足，或是否已申请对应翻译API使用权限'
-            )
-            console.error(`❌ 翻译结果不完整
-                预期数量: ${Object.keys(transLangObj).length}
-                实际数量: ${translatedValues.length}
-                样例数据: ${JSON.stringify(translatedValues.slice(0, 3))}`)
-            return
-        }
-
-        // 存储当前语言翻译结果
-        newLangObjMap[currentLang] = translatedValues
-        console.info(`✅ ${currentLang} 翻译完成`)
+    for (const key in transLangMap) {
+        const textList = transLangMap[key].filter(str => str) // 过滤空字符串（如果有的话）
+        const result = await translateChunks(textList, key)
+        textList.forEach((text, index) => {
+            if (typeof result[index] === 'string') {
+                const hash = generateId(text) // 生成json里对应的hash值
+                jsonObj[hash][key] = result[index]
+            }
+        })
     }
-
-    // ─── 合并翻译结果到配置 ───
-    Object.keys(transLangObj).forEach((key: any, index) => {
-        option.langKey.forEach(item => {
-            originLangObjMap[item][key] = newLangObjMap[item][index]
-        })
-    })
-
-    // ─── 生成最终配置文件结构 ───
-    console.log('📄 构建配置文件数据结构...')
-    const configLangObj: Record<string, Record<string, string>> = {}
-    Object.keys(originLangObjMap[option.originLang]).forEach(key => {
-        configLangObj[key] = {}
-        option.langKey.forEach(lang => {
-            configLangObj[key][lang] = originLangObjMap[lang][key]
-        })
-    })
 
     // ─── 写入文件系统 ───
     try {
-        fileUtils.setLangTranslateJSONFile(configLangObj)
+        setLangTranslateJSONFile(jsonObj)
         console.info('🎉 多语言配置文件已成功更新')
     } catch (error) {
         console.error('❌ 配置文件写入失败，原因:', error)
@@ -164,88 +119,20 @@ export async function autoTranslate() {
     }
 }
 
-/**
- * @description: 新增语言类型配置补全
- * @param originLang 源语言
+/** 分块翻译流程函数
+ * @description: 分块翻译流程函数
+ * @param textList 待翻译文本列表
+ * @param translateKey 目标语言
+ * @return 翻译后的文本列表，可以保证长度和入参textList一致
  */
-export async function languageConfigCompletion(originLang: string) {
-    const originLangObj = fileUtils.getLangObjByJSONFileWithLangKey(originLang)
-    const taskList = option.targetLangList.map(translateKey => {
-        // 获取目标语言 hash：value 对象 和 语言的复合对象，如果当前语言不存在，是langObj的value都为空
-        let curLangObj = fileUtils.getLangObjByJSONFileWithLangKey(translateKey)
-        return completionTranslateAndWriteConfigFile(originLangObj, curLangObj, translateKey)
-    })
-
-    await Promise.allSettled(taskList)
-}
-
-/**
- * @description: 补全新增语言翻译写入函数
- * @param langObj
- * @param curLangObj
- * @param translateKey
- * @return
- */
-export async function completionTranslateAndWriteConfigFile(
-    langObj: Record<string, string>,
-    curLangObj: Record<string, string>,
+async function translateChunks(
+    textList: string[],
     translateKey: string
-) {
-    // 构建需要翻译的语言映射对象
-    // langObj: 源语言的键值对映射，格式为 { hash: sourceText }
-    // curLangObj: 目标语言的键值对映射，格式为 { hash: targetText }，未翻译的值为空
-
-    // 创建待翻译内容对象，仅包含未翻译的条目，key是hash，value是源语言的对应hash的文本
-    const transLangObj: Record<string, string> = {}
-    Object.keys(langObj).forEach(key => {
-        // 如果目标语言中对应的翻译为空，则将 源语言的对应hash的文本 加入待翻译内容对象 中
-        if (!curLangObj[key]) {
-            transLangObj[key] = langObj[key]
-        }
-    })
-
-    if (!Object.values(transLangObj).length) return
-
-    // ─── 分块翻译流程开始 ───
-
-    console.info('进入新增语言补全翻译...')
-
-    // 调用抽离的函数
-    const resultValues = await translateChunks(transLangObj, translateKey)
-    // ─── 分块翻译流程结束 ───
-
-    if (resultValues.length !== Object.values(langObj).length) {
-        console.error('翻译异常，翻译结果缺失❌')
-        return
-    }
-    let newLangObjMap = resultValues
-    console.info('翻译成功⭐️⭐️⭐️')
-
-    Object.keys(transLangObj).forEach((key, index) => {
-        curLangObj[key] = newLangObjMap[index]
-    })
-
-    console.log('开始写入JSON配置文件...')
-    const configLangObj: any = JSON.parse(fileUtils.getLangTranslateJSONFile())
-
-    Object.keys(transLangObj).forEach(key => {
-        configLangObj[key][translateKey] = curLangObj[key]
-    })
-    try {
-        fileUtils.setLangTranslateJSONFile(configLangObj)
-        console.info('JSON配置文件写入成功⭐️⭐️⭐️')
-    } catch (error) {
-        console.error('❌JSON配置文件写入失败' + error)
-    }
-    console.info('新增语言翻译补全成功⭐️⭐️⭐️')
-}
-
-// 分块翻译流程函数
-async function translateChunks(transLangObj: Record<string, string>, translateKey: string) {
+): Promise<string[] | undefined[]> {
     const { translator } = option
     // 获取分块后的文本列表
     const translationChunks = chunkUtils.createTextSplitter(
-        Object.values(transLangObj),
+        textList,
         translator.option.maxChunkSize
     )
     const progressBar = new Progress(`正在翻译${translateKey} :sign [:bar] :percent`, {
@@ -282,7 +169,7 @@ async function translateChunks(transLangObj: Record<string, string>, translateKe
 
     // 等待所有分块完成并合并结果
     const chunkResults = await Promise.all(translatePromises)
-    return chunkResults
+    const result = chunkResults
         .map(item => {
             // 提取分割逻辑到单独的函数中，提高代码复用性
             const splitTranslation = (text: string, separatorRegex: RegExp) => {
@@ -307,4 +194,16 @@ async function translateChunks(transLangObj: Record<string, string>, translateKe
             }
         })
         .flat()
+    if (result.length !== textList.length) {
+        console.error(
+            '❌ 使用付费翻译时，请检查翻译API额度是否充足，或是否已申请对应翻译API使用权限'
+        )
+        console.error(`❌ 翻译结果不完整
+            预期数量: ${textList.length}
+            实际数量: ${result.length}
+            样例数据: ${JSON.stringify(result.slice(0, 3))}`)
+        return textList.map(() => undefined) // 失败则返回undefined，表示本次翻译无效
+    }
+    console.info(`✅ ${translateKey} 翻译完成`)
+    return result
 }
