@@ -64,7 +64,7 @@ export function checkAgainstRegexArray(value: string, regexArray: string[] | Reg
  */
 export function extractFunctionName(node: Node): string {
     let callName = ''
-    function callObjName(callObj: any, name: string): string {
+    function callObjName(callObj: types.MemberExpression, name: string): string {
         name += '.' + (callObj.property as any).name
         if (types.isMemberExpression(callObj.object)) {
             // isMemberExpression： 是否是成员表达式
@@ -75,10 +75,10 @@ export function extractFunctionName(node: Node): string {
     }
     if (types.isCallExpression(node)) {
         // isCallExpression： 是否是调用表达式
-        if (types.isMemberExpression((node as any).callee)) {
-            callName = callObjName((node as any).callee, '')
+        if (types.isMemberExpression(node.callee)) {
+            callName = callObjName(node.callee, '')
         } else {
-            callName = ((node as any).callee as any).name || ''
+            callName = (node.callee as any).name || ''
         }
     }
     return callName
@@ -109,13 +109,26 @@ export function extractStrings(fileContent: string, regex: any) {
  * @description: 生成i8n翻译函数
  * @return
  */
-export function createI18nTranslator<T extends boolean>(createOption: {
+export function createI18nTranslator(createOption: {
     value: string
-    isExpression?: T
+    returnExpression: true
     key?: string
     insertOption?: any
-}): T extends true ? Node : string {
-    const { value, isExpression = false, key, insertOption } = createOption
+}): types.CallExpression
+export function createI18nTranslator(createOption: {
+    value: string
+    returnExpression?: false
+    key?: string
+    insertOption?: any
+}): string
+export function createI18nTranslator(createOption: {
+    value: string
+    /** 是否返回expression节点，否则返回字符串 */
+    returnExpression?: boolean
+    key?: string
+    insertOption?: any
+}): types.CallExpression | string {
+    const { value, returnExpression = false, key, insertOption } = createOption
 
     // 从全局配置对象 option 中获取命名空间
     const nameSpace = option.namespace
@@ -135,12 +148,12 @@ export function createI18nTranslator<T extends boolean>(createOption: {
     }
     if (option.translateExtends) {
         const { handleCodeCall, handleCodeString } = option.translateExtends
-        return isExpression
+        return returnExpression
             ? handleCodeCall(config, insertOption)
             : handleCodeString(config, insertOption)
     }
 
-    if (isExpression) {
+    if (returnExpression) {
         const valueExp = types.stringLiteral(trimmedValue)
         valueExp.extra = {
             raw: `'${valStr}'`, // 防止转码为unicode

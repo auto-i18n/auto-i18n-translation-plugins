@@ -40,7 +40,7 @@ export default function (insertOption?: any): PluginObj['visitor']['JSXText'] {
             let expression = baseUtils.createI18nTranslator({
                 insertOption,
                 value,
-                isExpression: true
+                returnExpression: true
             })
             // 生成的翻译节点包装在  types.JSXExpressionContainer  中
             let newNode = types.jSXExpressionContainer(expression)

@@ -63,14 +63,14 @@ export default function (insertOption?: any): PluginObj['visitor']['StringLitera
                 let expression = baseUtils.createI18nTranslator({
                     insertOption,
                     value,
-                    isExpression: true
+                    returnExpression: true
                 })
                 replaceNode = types.jSXExpressionContainer(expression)
             } else {
                 replaceNode = baseUtils.createI18nTranslator({
                     insertOption,
                     value,
-                    isExpression: true
+                    returnExpression: true
                 })
             }
             path.replaceWith(replaceNode)

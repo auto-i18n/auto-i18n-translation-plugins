@@ -123,7 +123,7 @@ export function convertToTemplateLiteral(strArray: string[], option?: any): type
                 expressions.push(
                     baseUtils.createI18nTranslator({
                         value: str,
-                        isExpression: true,
+                        returnExpression: true,
                         insertOption: option
                     })
                 )
@@ -135,7 +135,7 @@ export function convertToTemplateLiteral(strArray: string[], option?: any): type
                 expressions.push(
                     baseUtils.createI18nTranslator({
                         value: str,
-                        isExpression: true,
+                        returnExpression: true,
                         insertOption: option
                     })
                 )

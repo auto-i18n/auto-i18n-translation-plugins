@@ -33,12 +33,10 @@ export default function (insertOption: any): PluginObj['visitor']['CallExpressio
                     const replaceNode = baseUtils.createI18nTranslator({
                         insertOption,
                         value,
-                        isExpression: true
+                        returnExpression: true
                     })
-                    if (typeof replaceNode !== 'string') {
-                        path.replaceWith(replaceNode)
-                        translateSetLang(replaceNode)
-                    }
+                    path.replaceWith(replaceNode)
+                    translateSetLang(replaceNode)
                 }
             } else if (option.translateType === TranslateTypeEnum.FULL_AUTO) {
                 // 全自动模式下还是只收集 单独 $t 调用
