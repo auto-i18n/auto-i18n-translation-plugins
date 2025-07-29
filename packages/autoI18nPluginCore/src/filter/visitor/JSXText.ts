@@ -11,9 +11,7 @@ import { baseUtils } from 'src/utils'
 import { option } from 'src/option'
 
 export default function (insertOption?: any): PluginObj['visitor']['JSXText'] {
-    return function (path: any) {
-        console.log('jsx text')
-
+    return function (path) {
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
             return
         }
@@ -33,7 +31,6 @@ export default function (insertOption?: any): PluginObj['visitor']['JSXText'] {
         }
         if (
             baseUtils.hasOriginSymbols(value) &&
-            option.excludedPattern.length &&
             !baseUtils.checkAgainstRegexArray(value, [...option.excludedPattern])
         ) {
             // 生成翻译节点

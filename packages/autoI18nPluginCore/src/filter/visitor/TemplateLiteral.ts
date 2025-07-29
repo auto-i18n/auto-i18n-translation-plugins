@@ -19,22 +19,18 @@ export default function (insertOption?: any): PluginObj['visitor']['TemplateLite
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
             return
         }
-        let { node, parent }: { node: types.TemplateLiteral; parent: types.Node } = path
+        let { node, parent } = path
 
         if (!node.quasis.length) return
 
-        // 获取真实调用函数
-        const extractFnName = baseUtils.extractFunctionName(parent)
-
-        // 调用语句判断当前调用语句是否包含需要过滤的调用语句
-        if (
-            types.isCallExpression(parent) &&
-            extractFnName &&
-            (option.excludedCall.includes(extractFnName) ||
-                (extractFnName?.split('.')?.pop() &&
-                    option.excludedCall.includes(extractFnName?.split('.')?.pop() || '')))
-        )
-            return
+        if (types.isCallExpression(parent)) {
+            // 获取真实调用函数 a.b.c
+            const extractFnName = baseUtils.extractFunctionName(parent)
+            const pass = option.excludedCall.some(call => {
+                return extractFnName === call || extractFnName.endsWith('.' + call)
+            })
+            if (pass) return
+        }
 
         node.quasis.forEach(item => handleTemplateElement(item, insertOption))
     }
@@ -54,7 +50,6 @@ function handleTemplateElement(node: types.TemplateElement, insertOption: any) {
     if (
         value &&
         baseUtils.hasOriginSymbols(value) &&
-        option.excludedPattern.length &&
         !baseUtils.checkAgainstRegexArray(value, [...option.excludedPattern])
     ) {
         // 生成字符类型翻译节点

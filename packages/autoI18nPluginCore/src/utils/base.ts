@@ -58,30 +58,28 @@ export function checkAgainstRegexArray(value: string, regexArray: string[] | Reg
 }
 
 /**
- * @description: 用于解析抽象语法树中的调用表达式，并提取出调用的名称，如a.b.c() 取 c。
- * @param {any} node
- * @return {*}
+ * @description: 用于解析抽象语法树中的调用表达式，并提取出调用的名称，如a.b.c('xxxx') 取 a.b.c。
+ * @param node
  */
-export function extractFunctionName(node: Node): string {
-    let callName = ''
-    function callObjName(callObj: types.MemberExpression, name: string): string {
-        name += '.' + (callObj.property as any).name
+export function extractFunctionName(node: types.CallExpression) {
+    function callObjName(callObj: types.MemberExpression, nameList: string[]): string[] {
+        if (types.isIdentifier(callObj.property)) {
+            nameList.unshift(callObj.property.name)
+        }
         if (types.isMemberExpression(callObj.object)) {
-            // isMemberExpression： 是否是成员表达式
-            return callObjName(callObj.object, name)
+            callObjName(callObj.object, nameList)
+        } else if (types.isIdentifier(callObj.object)) {
+            nameList.unshift(callObj.object.name)
         }
-        name = (callObj.object as any).name + name
-        return name
+        return nameList
     }
-    if (types.isCallExpression(node)) {
-        // isCallExpression： 是否是调用表达式
-        if (types.isMemberExpression(node.callee)) {
-            callName = callObjName(node.callee, '')
-        } else {
-            callName = (node.callee as any).name || ''
-        }
+    if (types.isMemberExpression(node.callee)) {
+        return callObjName(node.callee, []).join('.')
+    } else if (types.isIdentifier(node.callee)) {
+        return node.callee.name
+    } else {
+        return ''
     }
-    return callName
 }
 
 /**

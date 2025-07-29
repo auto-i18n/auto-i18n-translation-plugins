@@ -15,12 +15,13 @@ const EXCLUDED_CALL = [
     'console.info',
     'console.warn',
     'console.error',
-    '$i8n',
     'console.log',
-    '$t',
-    'require',
+    'console.debug',
+    '$i8n',
     '$$i8n',
+    '$t',
     '$$t',
+    'require',
     '_createCommentVNode'
 ]
 /**
@@ -32,7 +33,7 @@ const DEFAULT_OPTION = {
     /** 翻译调用函数，默认为 $t */
     translateKey: '$t',
 
-    /** 标记不翻译调用函数列表，避免某些调用被错误翻译 */
+    /** 标记不翻译调用函数列表，避免某些调用被错误翻译，默认包含 $t、$$t、$i18n、$$i18n 等 */
     excludedCall: [] as string[],
 
     /** 标记不用翻译的字符串模式数组，默认是匹配文件扩展名 */

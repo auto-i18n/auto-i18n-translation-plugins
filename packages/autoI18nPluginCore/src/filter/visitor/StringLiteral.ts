@@ -12,6 +12,7 @@ import { option } from 'src/option'
 
 export default function (insertOption?: any): PluginObj['visitor']['StringLiteral'] {
     return function (path) {
+        // 半自动不走节点编辑逻辑
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
             return
         }
@@ -31,28 +32,21 @@ export default function (insertOption?: any): PluginObj['visitor']['StringLitera
         }
         if (
             baseUtils.hasOriginSymbols(value) &&
-            option.excludedPattern.length &&
             !baseUtils.checkAgainstRegexArray(value, [...option.excludedPattern])
         ) {
-            // 获取真实调用函数
-            const extractFnName = baseUtils.extractFunctionName(parent)
+            // import 'string'
+            if (types.isImportDeclaration(parent)) return
+            // a.b.c('string') || a('string')
+            // ! 不兼容 a.b['c']('string') || a.b[`c`]('string')
+            if (types.isCallExpression(parent)) {
+                // 获取真实调用函数 a.b.c
+                const extractFnName = baseUtils.extractFunctionName(parent)
+                const pass = option.excludedCall.some(call => {
+                    return extractFnName === call || extractFnName.endsWith('.' + call)
+                })
+                if (pass) return
+            }
 
-            // 防止导入语句，只处理那些当前节点不是键值对的键的字符串字面量，调用语句判断当前调用语句是否包含需要过滤的调用语句
-            // TODO
-            if (
-                ('callee' in parent &&
-                    'property' in parent.callee &&
-                    'name' in parent.callee.property &&
-                    parent.callee.property?.name === option.translateKey) ||
-                types.isImportDeclaration(parent) ||
-                ('key' in parent && parent.key === node) ||
-                (types.isCallExpression(parent) &&
-                    extractFnName &&
-                    (option.excludedCall.includes(extractFnName) ||
-                        (extractFnName.split('.').pop() &&
-                            option.excludedCall.includes(extractFnName.split('.').pop() || ''))))
-            )
-                return
             let replaceNode
             if (option.deepScan && splitUtils.checkNeedSplit(value)) {
                 replaceNode = splitUtils.convertToTemplateLiteral(
