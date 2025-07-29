@@ -9,8 +9,9 @@ import TemplateLiteral from './visitor/TemplateLiteral'
 import CallExpressionFn from './visitor/CallExpression'
 import StringLiteralFn from './visitor/StringLiteral'
 import JSXTextFn from './visitor/JSXText'
+import { InsertOption } from './type'
 
-export default function (insertOption?: any) {
+export default function (insertOption?: InsertOption) {
     // 分别调用各个访问器函数并传入插入选项
     const stringLiteralVisitor = StringLiteralFn(insertOption)
     const jsxTextVisitor = JSXTextFn(insertOption)

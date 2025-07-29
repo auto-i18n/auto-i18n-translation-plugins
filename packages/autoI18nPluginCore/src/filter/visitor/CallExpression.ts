@@ -7,11 +7,12 @@
 import { baseUtils, translateUtils } from 'src/utils'
 import { TranslateTypeEnum } from 'src/enums'
 import { PluginObj } from '@babel/core'
+import { InsertOption } from '../type'
 import * as types from '@babel/types'
 import { option } from 'src/option'
 
 // 收集翻译对象
-export default function (insertOption: any): PluginObj['visitor']['CallExpression'] {
+export default function (insertOption?: InsertOption): PluginObj['visitor']['CallExpression'] {
     return function (path) {
         let { node } = path
         // 提取公共部分，减少重复访问 node.callee 属性

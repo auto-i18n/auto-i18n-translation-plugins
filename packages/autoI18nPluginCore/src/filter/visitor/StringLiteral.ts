@@ -7,10 +7,11 @@
 import { baseUtils, splitUtils } from 'src/utils'
 import { TranslateTypeEnum } from 'src/enums'
 import { PluginObj } from '@babel/core'
+import { InsertOption } from '../type'
 import * as types from '@babel/types'
 import { option } from 'src/option'
 
-export default function (insertOption?: any): PluginObj['visitor']['StringLiteral'] {
+export default function (insertOption?: InsertOption): PluginObj['visitor']['StringLiteral'] {
     return function (path) {
         // 半自动不走节点编辑逻辑
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {

@@ -50,7 +50,7 @@ module.exports = async function (source): Promise<string> {
         return source // 在黑名单目录中的文件，不处理，直接返回原始代码。
     }
 
-    let sourceObj
+    let sourceObj: { source: string }
     if (option.translateExtends) {
         sourceObj = await option.translateExtends?.handleInitFile(source, global.resourcePath)
     } else {

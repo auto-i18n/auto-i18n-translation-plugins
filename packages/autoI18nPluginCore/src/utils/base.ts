@@ -5,6 +5,7 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/utils/base.ts
  */
 import { FunctionFactoryOption } from './option'
+import { InsertOption } from 'src/filter/type'
 import { OriginLangKeyEnum } from 'src/enums'
 import { REGEX_MAP } from 'src/constants'
 // import generate from '@babel/generator'
@@ -111,20 +112,20 @@ export function createI18nTranslator(createOption: {
     value: string
     returnExpression: true
     key?: string
-    insertOption?: any
+    insertOption?: InsertOption
 }): types.CallExpression
 export function createI18nTranslator(createOption: {
     value: string
     returnExpression?: false
     key?: string
-    insertOption?: any
+    insertOption?: InsertOption
 }): string
 export function createI18nTranslator(createOption: {
     value: string
     /** 是否返回expression节点，否则返回字符串 */
     returnExpression?: boolean
     key?: string
-    insertOption?: any
+    insertOption?: InsertOption
 }): types.CallExpression | string {
     const { value, returnExpression = false, key, insertOption } = createOption
 

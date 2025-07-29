@@ -6,11 +6,12 @@
  */
 import { TranslateTypeEnum } from 'src/enums'
 import { PluginObj } from '@babel/core'
+import { InsertOption } from '../type'
 import * as types from '@babel/types'
 import { baseUtils } from 'src/utils'
 import { option } from 'src/option'
 
-export default function (insertOption?: any): PluginObj['visitor']['JSXText'] {
+export default function (insertOption?: InsertOption): PluginObj['visitor']['JSXText'] {
     return function (path) {
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
             return

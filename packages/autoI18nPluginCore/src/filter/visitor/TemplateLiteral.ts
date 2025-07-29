@@ -7,13 +7,14 @@
 import { baseUtils, translateUtils } from 'src/utils'
 import { TranslateTypeEnum } from 'src/enums'
 import { PluginObj } from '@babel/core'
+import { InsertOption } from '../type'
 import { option } from 'src/option'
 import types from '@babel/types'
 
 // 定义一个包含亚洲语言代码的数组
 const asianLangs = ['zh-cn', 'ja', 'ko']
 
-export default function (insertOption?: any): PluginObj['visitor']['TemplateLiteral'] {
+export default function (insertOption?: InsertOption): PluginObj['visitor']['TemplateLiteral'] {
     return function (path) {
         // 如果是半自动翻译，不做处理
         if (option.translateType === TranslateTypeEnum.SEMI_AUTO) {
@@ -37,7 +38,7 @@ export default function (insertOption?: any): PluginObj['visitor']['TemplateLite
 }
 
 // 处理模板元素
-function handleTemplateElement(node: types.TemplateElement, insertOption: any) {
+function handleTemplateElement(node: types.TemplateElement, insertOption?: InsertOption) {
     let value = node.value.raw || node.value.cooked // 获取模板字符串的值
     if (asianLangs.some(lang => option.originLang.includes(lang) || option.originLang === lang)) {
         try {
