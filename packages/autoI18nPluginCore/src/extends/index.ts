@@ -29,9 +29,7 @@ export type BaseExtendsType = {
             namespace: any
         },
         // 处理入口文件的结果
-        initFileResult: ReturnType<
-            (source: string, path: string) => { source: string; [key: string]: any }
-        >
+        initFileResult?: { source: string; [key: string]: any }
     ) => types.CallExpression
 
     /**
@@ -54,9 +52,7 @@ export type BaseExtendsType = {
             namespace: any
         },
         // 处理入口文件的结果
-        initFileResult: ReturnType<
-            (source: string, path: string) => { source: string; [key: string]: any }
-        >
+        initFileResult?: { source: string; [key: string]: any }
     ) => string
 }
 

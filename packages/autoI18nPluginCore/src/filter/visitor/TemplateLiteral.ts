@@ -24,6 +24,8 @@ export default function (insertOption?: InsertOption): PluginObj['visitor']['Tem
 
         if (!node.quasis.length) return
 
+        // a.b.c(`string`) || a(`string`)
+        // ! 不兼容 a.b['c'](`string`) || a.b[`c`](`string`)
         if (types.isCallExpression(parent)) {
             // 获取真实调用函数 a.b.c
             const extractFnName = baseUtils.extractFunctionName(parent)
