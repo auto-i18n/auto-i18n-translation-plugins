@@ -207,7 +207,7 @@ export async function completionTranslateAndWriteConfigFile(
     const transLangObj: Record<string, string> = {}
     Object.keys(langObj).forEach(key => {
         // 如果目标语言中对应的翻译为空，则将 源语言的对应hash的文本 加入待翻译内容对象 中
-        if (!curLangObj[key]) {
+        if (curLangObj[key] === undefined) {
             transLangObj[key] = langObj[key]
         }
     })
