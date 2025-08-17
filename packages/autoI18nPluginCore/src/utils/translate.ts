@@ -74,16 +74,7 @@ export async function autoTranslate() {
     const currentLangObj = JSON.parse(JSON.stringify(getLangObj()))
     option.langKey.forEach(lang => {
         const keyMap = fileUtils.getLangObjByJSONFileWithLangKey(lang)
-        if (option.isClear) {
-            const list = Object.keys(keyMap).filter(key => currentLangObj[key])
-            const resMap: Record<string, any> = {}
-            list.forEach(key => {
-                resMap[key] = keyMap[key]
-            })
-            originLangObjMap[lang] = resMap
-        } else {
-            originLangObjMap[lang] = keyMap
-        }
+        originLangObjMap[lang] = keyMap
     })
 
     // 筛选需要翻译的新增内容
@@ -291,4 +282,30 @@ async function translateChunks(transLangObj: Record<string, string>, translateKe
             }
         })
         .flat()
+}
+/**
+ * @description: 清理多余的翻译配置JSON文件
+ * @return {void} 无返回值
+ */
+export function cleanupUnusedTranslations() {
+    if (!option.isClear) return
+    console.log('🧹 进入清理流程')
+    // 获取当前的语言对象，如果不存在则使用空对象
+    const langObj = getLangObj() || {}
+
+    // 创建一个Set用于存储当前语言对象的所有key，便于快速查找
+    let langSet = new Set(Object.keys(langObj))
+
+    // 获取基础对象：优先使用传入的insertObj，否则从翻译文件中读取
+    const baseObj = JSON.parse(fileUtils.getLangTranslateJSONFile())
+
+    // 获取基础对象的所有key
+    const baseObjKeys = Object.keys(baseObj)
+    // 遍历所有key，删除在当前语言对象中不存在的配置
+    baseObjKeys.forEach(key => {
+        if (!langSet.has(key)) {
+            baseObj[key] && delete baseObj[key]
+        }
+    })
+    fileUtils.setLangTranslateJSONFile(baseObj)
 }

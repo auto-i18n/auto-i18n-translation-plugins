@@ -359,7 +359,8 @@ import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文�
 | deepScan             | boolean    | ❌   | `false`                  | 实验性属性，表示是否进行深层扫描字符串                             |
 | commonTranslateKey   | string     | ❌   | `''`                     | 通用翻译key                                                        |
 | insertFileExtensions | string[]   | ❌   | `[]`                     | 要插入翻译代码的文件扩展名列表                                     |
-| isClear              | boolean    | ❌   | `false`                  | 是否清除已经不在上下文中的内容（清除项目中不再使用到的源语言键值对） |
+| isClear              | boolean    | ❌   | `false`                  | 是否清除已经不在上下文中的内容（清除项目中不再使用到的源语言键值对）,仅仅支持打包模式下使用 |
+| isKeepSpace          | boolean    | ❌   | `false`                  | 是否保留源字符串中的空格，默认会自动清除空格 |
 
 ---
 
@@ -483,6 +484,13 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 原始作者：wenps、xu-code、Caleb-Xu、Winfans
 
 ## 更新日志
+
+### v1.1.7 (推荐版本)
+
+-   enable 能力兼容 翻译初始化补全
+-   新增扫描是否支持清除前后空格配置
+-   修复异常触发新增翻译问题  
+-   修复清理配置异常不生效问题
 
 ### v1.1.6 (推荐版本)
 

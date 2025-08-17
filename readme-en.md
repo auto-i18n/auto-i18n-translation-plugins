@@ -348,7 +348,8 @@ import '../lang/index.js' // 📍 Must be imported on the first line of the entr
 | deepScan             | boolean    | ❌       | `false`                  | Experimental: Whether to perform deep string scanning    |
 | commonTranslateKey   | string     | ❌       | `''`                     | General translation key                                  |
 | insertFileExtensions | string[]   | ❌       | `[]`                     | List of file extensions to insert translation code into  |
-| isClear              | boolean    | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context) |
+| isClear              | boolean    | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context), only supported in build mode |
+| isKeepSpace          | boolean    | ❌       | `false`                  | Whether to keep source string spaces, default will clear spaces |
 
 ---
 
@@ -471,6 +472,12 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+### v1.1.7 (Recommended Version)
+
+-   Added compatibility for enable feature and translation initialization completion
+-   Added configuration option to control whether to remove leading/trailing whitespace during scanning
+-   Fixed issue with abnormal triggering of new translations
+-   Fixed issue where cleanup configuration was not taking effect
 
 ### v1.1.6 (Recommended Version)
 
