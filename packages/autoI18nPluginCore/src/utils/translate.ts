@@ -170,6 +170,8 @@ export async function autoTranslate() {
  */
 export function languageConfigCompletion(obj: any) {
     if (!Object.keys(obj)) return
+    const enabled = typeof option.enabled === 'function' ? option.enabled() : option.enabled
+    if (!enabled) return
     let needCompletionList: any[] = []
     const JSONobj = JSON.parse(fileUtils.getLangTranslateJSONFile())
     option.targetLangList.forEach(item => {
