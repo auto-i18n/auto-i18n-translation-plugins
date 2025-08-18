@@ -349,7 +349,7 @@ import '../lang/index.js' // 📍 Must be imported on the first line of the entr
 | commonTranslateKey   | string     | ❌       | `''`                     | General translation key                                  |
 | insertFileExtensions | string[]   | ❌       | `[]`                     | List of file extensions to insert translation code into  |
 | isClear              | boolean    | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context), only supported in build mode |
-| isKeepSpace          | boolean    | ❌       | `false`                  | Whether to keep source string spaces, default will clear spaces |
+| isClearSpace          | boolean    | ❌       | `false`                  | Whether to remove whitespace from both ends of source strings, whitespace is preserved by default |
 
 ---
 

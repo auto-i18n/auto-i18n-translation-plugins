@@ -122,7 +122,7 @@ const DEFAULT_OPTION = {
     /**
      * 是否保留空格
      */
-    isKeepSpace: true
+    isClearSpace: true
 }
 
 /**

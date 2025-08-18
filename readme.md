@@ -360,7 +360,7 @@ import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文�
 | commonTranslateKey   | string     | ❌   | `''`                     | 通用翻译key                                                        |
 | insertFileExtensions | string[]   | ❌   | `[]`                     | 要插入翻译代码的文件扩展名列表                                     |
 | isClear              | boolean    | ❌   | `false`                  | 是否清除已经不在上下文中的内容（清除项目中不再使用到的源语言键值对）,仅仅支持打包模式下使用 |
-| isKeepSpace          | boolean    | ❌   | `false`                  | 是否保留源字符串中的空格，默认会自动清除空格 |
+| isClearSpace          | boolean    | ❌   | `false`                  | 是否清除源字符串中左右两边的空格，默认会保留空格 |
 
 ---
 
