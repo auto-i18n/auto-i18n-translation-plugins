@@ -485,6 +485,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 更新日志
 
+### v1.1.8 (推荐版本)
+
+-   是否支持清除前后空格配置重命名
+
 ### v1.1.7 (推荐版本)
 
 -   enable 能力兼容 翻译初始化补全

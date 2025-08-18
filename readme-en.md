@@ -472,6 +472,11 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+
+### v1.1.8 (Recommended Version)
+
+-   Renamed configuration for controlling leading/trailing whitespace removal
+
 ### v1.1.7 (Recommended Version)
 
 -   Added compatibility for enable feature and translation initialization completion
