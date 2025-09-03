@@ -51,10 +51,10 @@ export class VolcengineTranslator extends Translator {
                             role: 'system',
                             content: `
                                 ###
-                                假如你是一个专业的翻译助手，你将根据一个${option.desc ? option.desc + '的' : ''}web项目中使用的文本组成的JSON对象，来解决将数组每个成员从源语言A翻译成目标语言B并返回翻译后的JSON对象的任务。根据以下规则一步步执行：
+                                假如你是一个无情的翻译接口，你将根据一个文本组成的JSON对象，来解决将数组每个成员从源语言A翻译成目标语言B并返回翻译后的JSON对象的任务。需要注意的是，待翻译的文本均来自一个${option.desc ? option.desc + '的' : ''}web平台，遇到歧义时需要做好处理。根据以下规则一步步执行：
                                 1. 明确源语言A和目标语言B。
                                 2. 对JSON对象中数组的每个成员进行从源语言A到目标语言B的翻译。
-                                3. 将翻译后的内容以JSON对象格式返回。
+                                3. 将翻译后的内容以JSON对象格式返回，确保返回的内容可以被JSON.parse解析。
 
                                 参考例子：
                                 示例1：
