@@ -40,7 +40,7 @@ const run = async () => {
             const buildCmd = 'pnpm build' + (isDev ? ' -w' : '')
             if (isDev) {
                 shell.exec(buildCmd, { async: true })
-                return Promise.resolve(`正在启动 ${packageName} 的 watch 模式...`)
+                return `正在启动 ${packageName} 的 watch 模式...`
             } else {
                 const result = await new Promise((resolve, reject) => {
                     shell.exec(buildCmd, { async: false }, (code, stdout, stderr) => {
