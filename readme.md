@@ -485,6 +485,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 更新日志
 
+### v1.1.9 (推荐版本)
+
+-   修复 deepScan 切分字符串不处理换行符等问题
+
 ### v1.1.8 (推荐版本)
 
 -   是否支持清除前后空格配置重命名

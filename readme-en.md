@@ -472,6 +472,10 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+### v1.1.9 (Recommended Version)
+
+-   Fixed issue where deepScan string splitting wasn't handling line breaks and other special characters
+
 
 ### v1.1.8 (Recommended Version)
 
