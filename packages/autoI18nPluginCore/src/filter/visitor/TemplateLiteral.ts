@@ -64,10 +64,8 @@ function handleTemplateElement(node: types.TemplateElement, insertOption?: Inser
         // 替换为字符类型翻译节点
         node.value.raw = node.value.cooked = `\${${newNode}}`
 
-        let id = baseUtils.generateId(value)
-
-        if (id && value) {
-            translateUtils.setLangObj(id, value)
+        if (value) {
+            translateUtils.sourceTextSet.add(value)
         }
     }
 }

@@ -57,11 +57,10 @@ function translateSetLang(node: types.CallExpression) {
     let arg = node.arguments || []
     // 提取参数作为值
     // 检查参数是否为字符串字面量
-    const id = types.isStringLiteral(arg[0]) ? arg[0].value : ''
     const value = types.isStringLiteral(arg[1]) ? arg[1].value : ''
     // 检查 ID 和值是否存在
-    if (id && value) {
+    if (value) {
         // 调用翻译工具的 setLangObj 方法设置语言对象属性
-        translateUtils.setLangObj(id, value)
+        translateUtils.sourceTextSet.add(value)
     }
 }

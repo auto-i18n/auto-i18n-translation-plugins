@@ -14,40 +14,8 @@ import { chunkUtils } from '.'
 export const SEPARATOR = '\n┇┇┇\n'
 export const SPLIT_SEPARATOR_REGEX = /\n┇ *┇ *┇\n/
 
-type LangObj = { [key: string]: string }
-
-export let globalLangObj: LangObj = {}
-
-/**
- * @description: 设置翻译对象属性
- * @param {string} key
- * @param {string} value
- * @return {*}
- */
-export function setLangObj(key: string, value: string) {
-    if (!globalLangObj[key]) {
-        globalLangObj[key] = value
-    }
-}
-
-/**
- * @description: 读取翻译对象
- * @return {*}
- */
-export function getLangObj() {
-    return globalLangObj
-}
-
-/**
- * @description: 初始化翻译对象
- * @param {LangObj} obj
- * @return {*}
- */
-export function initLangObj(obj: LangObj) {
-    if (!Object.keys(globalLangObj)) {
-        globalLangObj = obj
-    }
-}
+/** 需要翻译的源文本集合 */
+export const sourceTextSet = new Set<string>()
 
 /**
  * 自动生成多语言配置文件的核心方法
@@ -68,10 +36,13 @@ export async function autoTranslate() {
     if (!enabled) return
 
     /** index.json的内容对象 */
-    let jsonObj: Record<string, Record<string, string>> = {}
+    let jsonObj: {
+        [hash: string]: {
+            [langKey: string]: string
+        }
+    } = {}
     try {
         jsonObj = JSON.parse(getLangTranslateJSONFile()) || {}
-        console.debug('🚀 ~ autoTranslate ~ jsonObj:', jsonObj)
     } catch (e) {
         jsonObj = {}
     }
@@ -80,16 +51,16 @@ export async function autoTranslate() {
     /** 待翻译内容，key为目标语言，value为源语言数组 */
     const transLangMap: Record<string, string[]> = {}
     langKey.forEach(key => (transLangMap[key] = []))
-
-    for (const id in jsonObj) {
-        const langObj = jsonObj[id]
+    sourceTextSet.forEach(text => {
+        const hash = generateId(text)
+        const langObj = (jsonObj[hash] ||= { [originLang]: text })
         langKey.forEach(key => {
             // 如果对象中不存在对应语言key表示需要翻译（空字符串表示不需要翻译）
             if (!(key in langObj)) {
-                transLangMap[key].push(langObj[originLang])
+                transLangMap[key].push(text)
             }
         })
-    }
+    })
 
     if (Object.values(transLangMap).every(arr => !arr.length)) {
         console.info('✅ 当前没有需要翻译的新内容')
