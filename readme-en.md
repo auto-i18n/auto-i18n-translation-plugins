@@ -41,7 +41,6 @@ pnpm run preview // Don't select React, contains too much English text
 
 [Documentation](https://juejin.cn/post/7483435518526062626).
 
-
 ---
 
 ## 🌟 Quick Start 🚀
@@ -85,6 +84,7 @@ const langMap = {
 #### 📲 Instant Language Switching
 
 If you don't want to switch languages by refreshing the page, you can directly modify the language via `$changeLang` and then re - render the corresponding components.
+
 ```js
 window.$changeLang('en')
 ```
@@ -118,17 +118,18 @@ export default {
 }
 </script>
 ```
+
 #### 🔄 Replace Language Packs
 
 If you want to modify the built - in generated language packs, you can directly modify the `langMap` in the global object. For example:
 
 ```js
 window.langMap = {
-    'en': {
-        'zccsau6': 'hello'
+    en: {
+        zccsau6: 'hello'
     },
     'zh-cn': {
-        'zccsau6': '你好'
+        zccsau6: '你好'
     }
 }
 ```
@@ -165,6 +166,7 @@ export default defineConfig({
     ]
 })
 ```
+
 #### **Webpack Configuration Example** (webpack.config.js):
 
 ```javascript
@@ -190,6 +192,7 @@ module.exports = {
 ```
 
 ---
+
 ### 4️⃣ Translator Configuration Examples 🛠️
 
 The plugin uses Google Translate by default (with a default proxy port of 7890). When the network does not support accessing Google, we recommend using **Youdao Translate** ✨, which has excellent translation quality. Currently, the plugin has built - in support for Google, Youdao, and Baidu translation services. If you need to customize a translator, you can refer to the examples below.
@@ -213,9 +216,11 @@ translator: new GoogleTranslator({
 })
 ...
 ```
+
 #### **Using Youdao Translation**
 
 You need to apply for an API. [API documentation](https://ai.youdao.com/DOCSIRMA/html/trans/api/wbfy/index.html).
+
 ```javascript
 import { YoudaoTranslator } from 'vite-auto-i18n-plugin'
 
@@ -247,6 +252,7 @@ translator: new BaiduTranslator({
 It supports translation using `doubao` or `deepseek`. The translation effect of large AI models is more accurate than traditional API translation, but it takes longer.
 Introduction to Volcengine large models: https://www.volcengine.com/docs/82379/1099455.
 You need to activate the large model service and apply for an API. [API documentation](https://www.volcengine.com/docs/82379/1298454).
+
 ```javascript
 import { VolcengineTranslator } from 'vite-auto-i18n-plugin'
 
@@ -269,6 +275,7 @@ import { EmptyTranslator } from 'vite-auto-i18n-plugin'
 translator: new EmptyTranslator()
 ...
 ```
+
 #### **Custom Translator**
 
 If you have a personal translation API, you can customize a translator in the following ways:
@@ -294,7 +301,9 @@ translator: new Translator({
 })
 ...
 ```
+
 If you need more advanced features, you can use inheritance. However, there is currently no relevant scenario.
+
 ```javascript
 import { Translator } from 'vite-auto-i18n-plugin'
 
@@ -326,30 +335,30 @@ import '../lang/index.js' // 📍 Must be imported on the first line of the entr
 
 ## ⚙️ Configuration Parameters
 
-| Parameter            | Type       | Required | Default                  | Description                                              |
-| -------------------- | ---------- | -------- | ------------------------ | -------------------------------------------------------- |
-| enabled              | boolean    | ❌       | `true`                   | Whether to trigger translation.                          |
-| translateType        | string     | ❌       | `full-auto`              | Translation mode: `full-auto` or `semi-auto`             |
-| translateKey         | string     | ✅       | `$t`                     | Translation function name (e.g., `$t`)                   |
-| excludedCall         | string[]   | ❌       | `['$i8n', 'require', …]` | Function calls to exclude from translation               |
-| excludedPattern      | RegExp[]   | ❌       | `[/\.\w+$/]`             | Patterns to exclude (e.g., file extensions)              |
-| excludedPath         | string[]   | ❌       | `['node_modules']`       | Directories to exclude (e.g., `node_modules`)            |
-| includePath          | RegExp[]   | ❌       | `[/src\//]`              | Whitelist of directories to include (default: `src`)     |
-| globalPath           | string     | ❌       | `'./lang'`               | Path for translation config files                        |
-| distPath             | string     | ✅       | `''`                     | Output path for built files                              |
-| distKey              | string     | ✅       | `'index'`                | Main translation file name                               |
-| namespace            | string     | ✅       | `lang`                   | Project namespace for distinguishing translation configs |
-| originLang           | string     | ✅       | `'zh-cn'`                | Source language                                          |
-| targetLangList       | string[]   | ✅       | `['en']`                 | Target languages                                         |
-| buildToDist          | boolean    | ❌       | `false`                  | Whether to bundle translation files into main build      |
-| translator           | Translator | ❌       | `GoogleTranslator`       | Translator instance                                      |
-| translatorOption     | object     | ❌       | `{}`                     | Translator options (lower priority than `translator`)    |
-| rewriteConfig        | boolean    | ❌       | `true`                   | Whether to rewrite config file on each plugin run        |
-| deepScan             | boolean    | ❌       | `false`                  | Experimental: Whether to perform deep string scanning    |
-| commonTranslateKey   | string     | ❌       | `''`                     | General translation key                                  |
-| insertFileExtensions | string[]   | ❌       | `[]`                     | List of file extensions to insert translation code into  |
+| Parameter            | Type       | Required | Default                  | Description                                                                                                                  |
+| -------------------- | ---------- | -------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| enabled              | boolean    | ❌       | `true`                   | Whether to trigger translation.                                                                                              |
+| translateType        | string     | ❌       | `full-auto`              | Translation mode: `full-auto` or `semi-auto`                                                                                 |
+| translateKey         | string     | ✅       | `$t`                     | Translation function name (e.g., `$t`)                                                                                       |
+| excludedCall         | string[]   | ❌       | `['$i8n', 'require', …]` | Function calls to exclude from translation                                                                                   |
+| excludedPattern      | RegExp[]   | ❌       | `[/\.\w+$/]`             | Patterns to exclude (e.g., file extensions)                                                                                  |
+| excludedPath         | string[]   | ❌       | `['node_modules']`       | Directories to exclude (e.g., `node_modules`)                                                                                |
+| includePath          | RegExp[]   | ❌       | `[/src\//]`              | Whitelist of directories to include (default: `src`)                                                                         |
+| globalPath           | string     | ❌       | `'./lang'`               | Path for translation config files                                                                                            |
+| distPath             | string     | ✅       | `''`                     | Output path for built files                                                                                                  |
+| distKey              | string     | ✅       | `'index'`                | Main translation file name                                                                                                   |
+| namespace            | string     | ✅       | `lang`                   | Project namespace for distinguishing translation configs                                                                     |
+| originLang           | string     | ✅       | `'zh-cn'`                | Source language                                                                                                              |
+| targetLangList       | string[]   | ✅       | `['en']`                 | Target languages                                                                                                             |
+| buildToDist          | boolean    | ❌       | `false`                  | Whether to bundle translation files into main build                                                                          |
+| translator           | Translator | ❌       | `GoogleTranslator`       | Translator instance                                                                                                          |
+| translatorOption     | object     | ❌       | `{}`                     | Translator options (lower priority than `translator`)                                                                        |
+| rewriteConfig        | boolean    | ❌       | `true`                   | Whether to rewrite config file on each plugin run                                                                            |
+| deepScan             | boolean    | ❌       | `false`                  | Experimental: Whether to perform deep string scanning                                                                        |
+| commonTranslateKey   | string     | ❌       | `''`                     | General translation key                                                                                                      |
+| insertFileExtensions | string[]   | ❌       | `[]`                     | List of file extensions to insert translation code into                                                                      |
 | isClear              | boolean    | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context), only supported in build mode |
-| isClearSpace          | boolean    | ❌       | `false`                  | Whether to remove whitespace from both ends of source strings, whitespace is preserved by default |
+| isClearSpace         | boolean    | ❌       | `false`                  | Whether to remove whitespace from both ends of source strings, whitespace is preserved by default                            |
 
 ---
 
@@ -442,9 +451,9 @@ To update translations, simply modify `index.json`.
 
 ## 📦 User Group
 
-WeChat Group
+QQ Group
 
-![wx](./wx.jpg)
+![qq](./qq.jpg)
 
 ---
 
@@ -476,7 +485,6 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 -   Fixed issue where deepScan string splitting wasn't handling line breaks and other special characters
 
-
 ### v1.1.8 (Recommended Version)
 
 -   Renamed configuration for controlling leading/trailing whitespace removal
@@ -503,7 +511,6 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 -   Fixed template string processing exception in exclude functions
 -   Added interval configuration for Google Translate
 -   Added support for custom interface parameters in translators
-
 
 ### v1.1.3 (Recommended Version)
 

@@ -39,7 +39,7 @@ tips：有道翻译需要用户自己去申请有道的翻译服务，demo里面
 
 ---
 
-## ❓ 常见问题 
+## ❓ 常见问题
 
 [问题文档](https://juejin.cn/post/7483435518526062626)。
 
@@ -337,30 +337,30 @@ import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文�
 
 ## ⚙️ 配置参数说明
 
-| 参数                 | 类型       | 必选 | 默认值                   | 描述                                                               |
-| -------------------- | ---------- | ---- | ------------------------ | ------------------------------------------------------------------ |
-| enabled              | boolean    | ❌   | `true`                   | 是否触发翻译。                                                     |
-| translateType        | string     | ❌   | `full-auto`              | 翻译状态，默认有两种可选`full-auto` 和 `semi-auto` 。              |
-| translateKey         | string     | ✅   | `$t`                     | 翻译调用函数名称，例如`$t` 表示翻译调用时的函数名                  |
-| excludedCall         | string[]   | ❌   | `['$i8n', 'require', …]` | 标记不会被翻译的函数调用列表                                       |
-| excludedPattern      | RegExp[]   | ❌   | `[/\.\w+$/]`             | 用于标记排除不翻译的字符串模式，例如文件路径中的文件后缀           |
-| excludedPath         | string[]   | ❌   | `['node_modules']`       | 指定需要排除翻译的文件夹路径，例如默认会跳过`node_modules`         |
-| includePath          | RegExp[]   | ❌   | `[/src\//]`              | 指定只翻译某些目录路径（白名单），默认为`src`                      |
-| globalPath           | string     | ❌   | `'./lang'`               | 翻译文件配置生成路径                                               |
-| distPath             | string     | ✅   | `''`                     | 打包后生成的文件位置路径                                           |
-| distKey              | string     | ✅   | `'index'`                | 打包后生成的翻译主文件名称                                         |
-| namespace            | string     | ✅   | `lang`                   | 项目命名空间，用于区分不同项目的翻译配置                           |
-| originLang           | string     | ✅   | `'zh-cn'`                | 源语言，翻译以此语言为基础                                         |
-| targetLangList       | string[]   | ✅   | `['en']`                 | 目标语言列表，支持配置多个语言                                     |
-| buildToDist          | boolean    | ❌   | `false`                  | 是否在构建结束后将最新的翻译文件打包到主包中，默认不打包           |
-| translator           | Translator | ❌   | `GoogleTranslator`       | 翻译器实例                                                         |
-| translatorOption     | object     | ❌   | `{}`                     | 翻译器的配置项，优先级低于`translator`                             |
-| rewriteConfig        | boolean    | ❌   | `true`                   | 插件每次运行时是否重写配置文件                                     |
-| deepScan             | boolean    | ❌   | `false`                  | 实验性属性，表示是否进行深层扫描字符串                             |
-| commonTranslateKey   | string     | ❌   | `''`                     | 通用翻译key                                                        |
-| insertFileExtensions | string[]   | ❌   | `[]`                     | 要插入翻译代码的文件扩展名列表                                     |
+| 参数                 | 类型       | 必选 | 默认值                   | 描述                                                                                        |
+| -------------------- | ---------- | ---- | ------------------------ | ------------------------------------------------------------------------------------------- |
+| enabled              | boolean    | ❌   | `true`                   | 是否触发翻译。                                                                              |
+| translateType        | string     | ❌   | `full-auto`              | 翻译状态，默认有两种可选`full-auto` 和 `semi-auto` 。                                       |
+| translateKey         | string     | ✅   | `$t`                     | 翻译调用函数名称，例如`$t` 表示翻译调用时的函数名                                           |
+| excludedCall         | string[]   | ❌   | `['$i8n', 'require', …]` | 标记不会被翻译的函数调用列表                                                                |
+| excludedPattern      | RegExp[]   | ❌   | `[/\.\w+$/]`             | 用于标记排除不翻译的字符串模式，例如文件路径中的文件后缀                                    |
+| excludedPath         | string[]   | ❌   | `['node_modules']`       | 指定需要排除翻译的文件夹路径，例如默认会跳过`node_modules`                                  |
+| includePath          | RegExp[]   | ❌   | `[/src\//]`              | 指定只翻译某些目录路径（白名单），默认为`src`                                               |
+| globalPath           | string     | ❌   | `'./lang'`               | 翻译文件配置生成路径                                                                        |
+| distPath             | string     | ✅   | `''`                     | 打包后生成的文件位置路径                                                                    |
+| distKey              | string     | ✅   | `'index'`                | 打包后生成的翻译主文件名称                                                                  |
+| namespace            | string     | ✅   | `lang`                   | 项目命名空间，用于区分不同项目的翻译配置                                                    |
+| originLang           | string     | ✅   | `'zh-cn'`                | 源语言，翻译以此语言为基础                                                                  |
+| targetLangList       | string[]   | ✅   | `['en']`                 | 目标语言列表，支持配置多个语言                                                              |
+| buildToDist          | boolean    | ❌   | `false`                  | 是否在构建结束后将最新的翻译文件打包到主包中，默认不打包                                    |
+| translator           | Translator | ❌   | `GoogleTranslator`       | 翻译器实例                                                                                  |
+| translatorOption     | object     | ❌   | `{}`                     | 翻译器的配置项，优先级低于`translator`                                                      |
+| rewriteConfig        | boolean    | ❌   | `true`                   | 插件每次运行时是否重写配置文件                                                              |
+| deepScan             | boolean    | ❌   | `false`                  | 实验性属性，表示是否进行深层扫描字符串                                                      |
+| commonTranslateKey   | string     | ❌   | `''`                     | 通用翻译key                                                                                 |
+| insertFileExtensions | string[]   | ❌   | `[]`                     | 要插入翻译代码的文件扩展名列表                                                              |
 | isClear              | boolean    | ❌   | `false`                  | 是否清除已经不在上下文中的内容（清除项目中不再使用到的源语言键值对）,仅仅支持打包模式下使用 |
-| isClearSpace          | boolean    | ❌   | `false`                  | 是否清除源字符串中左右两边的空格，默认会保留空格 |
+| isClearSpace         | boolean    | ❌   | `false`                  | 是否清除源字符串中左右两边的空格，默认会保留空格                                            |
 
 ---
 
@@ -455,9 +455,9 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 📦 用户群
 
-微信群
+微信群已满，使用QQ群
 
-![wx](./wx.jpg)
+![qq](./qq.jpg)
 
 ---
 
@@ -497,13 +497,13 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 -   enable 能力兼容 翻译初始化补全
 -   新增扫描是否支持清除前后空格配置
--   修复异常触发新增翻译问题  
+-   修复异常触发新增翻译问题
 -   修复清理配置异常不生效问题
 
 ### v1.1.6 (推荐版本)
 
 -   修复模板字符串前后空格清空导致 JSON 对应不上翻译函数的问题
--   修复插值中文括号导致插值失效的问题  
+-   修复插值中文括号导致插值失效的问题
 -   新增清理配置功能
 
 ### v1.1.5 (推荐版本)
