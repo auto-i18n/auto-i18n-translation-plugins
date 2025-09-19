@@ -1,0 +1,233 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  min-height: 100vh;
+}
+
+/* 头部样式 */
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* 语言切换器样式 */
+.language-switcher {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.language-switcher h2 {
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.lang-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.lang-buttons button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #007bff;
+  background: white;
+  color: #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.lang-buttons button:hover {
+  background: #007bff;
+  color: white;
+}
+
+.lang-buttons button.active {
+  background: #007bff;
+  color: white;
+}
+
+/* 测试区域样式 */
+.test-section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background: white;
+}
+
+.test-section h2 {
+  color: #495057;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #007bff;
+}
+
+.test-section h3 {
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+
+.test-content {
+  padding: 1rem 0;
+}
+
+.test-content p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.test-content ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.test-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* 输入框和按钮样式 */
+input[type="text"] {
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  width: 200px;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+button:not(.primary):not(.secondary):not(.lang-buttons button) {
+  background: #007bff;
+  color: white;
+}
+
+button:not(.primary):not(.secondary):not(.lang-buttons button):hover {
+  background: #0056b3;
+}
+
+.primary {
+  background: #28a745;
+  color: white;
+}
+
+.primary:hover {
+  background: #1e7e34;
+}
+
+.secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.secondary:hover {
+  background: #545b62;
+}
+
+/* 卡片样式 */
+.card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.card h3 {
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.card p {
+  margin-bottom: 1.5rem;
+  color: #6c757d;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* 页脚样式 */
+.footer {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: #343a40;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.footer p {
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .lang-buttons {
+    flex-direction: column;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    margin-right: 0;
+  }
+}
