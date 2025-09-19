@@ -108,18 +108,18 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
                 }
             })
 
-            // 构建开始前 - 对应 Vite 的 buildStart
+            // 构建开始前 
             api.onBeforeBuild(() => {
                 console.info('Rsbuild 构建阶段批量翻译开始')
             })
 
-            // 构建结束后 - 对应 Vite 的 buildEnd
+            // 构建结束后 
             api.onAfterBuild(async () => {
                 console.info('构建阶段批量翻译')
                 await translateUtils.autoTranslate()
             })
 
-            // 构建完全结束 - 对应 Vite 的 closeBundle
+            // 构建完全结束
             api.onCloseBuild(async () => {
                 translateUtils.cleanupUnusedTranslations()
                 // 翻译配置写入主文件
