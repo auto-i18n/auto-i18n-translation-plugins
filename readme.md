@@ -516,6 +516,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 更新日志
 
+### v1.1.10 (推荐版本)
+
+-   新增 rsbuild 插件
+
 ### v1.1.9 (推荐版本)
 
 -   修复 deepScan 切分字符串不处理换行符等问题

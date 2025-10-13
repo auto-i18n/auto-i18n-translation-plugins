@@ -508,6 +508,10 @@ Since v1.0.5, simply import the generated `index.js` in your entry file - no nee
 
 Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
+### v1.1.10 (Recommended Version)
+
+- Added rsbuild plugin
+
 ## Changelog
 
 ### v1.1.9 (Recommended Version)
