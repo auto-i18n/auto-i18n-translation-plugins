@@ -32,7 +32,7 @@ pnpm run preview // Don't select React, contains too much English text
 ## 📖 Supported Features
 
 -   **Frameworks**: All JavaScript-based frontend frameworks (Vue2/3, React, etc.)
--   **Build Tools**: Fully compatible with Webpack, Vite, and Rollup 🚀
+-   **Build Tools**: Fully compatible with Webpack, Vite, Rsbuild and Rollup 🚀
 -   **Translation Services**: Default support for **Youdao** and **Google** translation, plus custom translators
 
 ---
@@ -61,6 +61,15 @@ yarn add vite-auto-i18n-plugin --dev
 npm install webpack-auto-i18n-plugin --save-dev
 # or
 yarn add webpack-auto-i18n-plugin --dev
+```
+
+
+#### **⚡ Rsbuild Project:**
+
+```bash
+npm install rsbuild-auto-i18n-plugin --save-dev
+# 或
+yarn add rsbuild-auto-i18n-plugin --dev
 ```
 
 ---
@@ -191,13 +200,33 @@ module.exports = {
 }
 ```
 
+
+#### **Rsbuild Configuration Example** (rsbuild.config.js):
+
+```javascript
+const rsbuildPluginsAutoI18n = require('rsbuild-auto-i18n-plugin')
+const { YoudaoTranslator } = require('rsbuild-auto-i18n-plugin')
+
+export default defineConfig({
+  plugins: [
+    pluginReact(),
+    rsbuildPluginsAutoI18n({
+      targetLangList: ['en'],
+      translator: new YoudaoTranslator({
+            appId: '4cdb9baea8066fef',
+            appKey: 'ONI6AerZnGRyDqr3w7UM730mPuF8mB3j'
+        })
+    })
+  ],
+});
+
 ---
 
 ### 4️⃣ Translator Configuration Examples 🛠️
 
 The plugin uses Google Translate by default (with a default proxy port of 7890). When the network does not support accessing Google, we recommend using **Youdao Translate** ✨, which has excellent translation quality. Currently, the plugin has built - in support for Google, Youdao, and Baidu translation services. If you need to customize a translator, you can refer to the examples below.
 
-The following examples use `vite` as an example, and `webpack` is similar.
+The following examples use `vite` as an example, and `webpack`、`rsbuild` is similar.
 
 #### **Using Google Translate (Default)**
 

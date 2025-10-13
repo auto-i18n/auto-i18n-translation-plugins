@@ -34,7 +34,7 @@ tips：有道翻译需要用户自己去申请有道的翻译服务，demo里面
 ## 📖 支持范围
 
 -   **框架**: 支持所有编译为 JS 的前端框架（如 Vue2/3 和 React 等）。
--   **构建工具**: 完美兼容 Webpack、Vite 和 Rollup 🚀。
+-   **构建工具**: 完美兼容 Webpack、Vite、Rsbuild 和 Rollup 🚀。
 -   **翻译服务**: 默认支持 **有道翻译** 和 **谷歌翻译**，并支持自定义翻译器。
 
 ---
@@ -63,6 +63,15 @@ yarn add vite-auto-i18n-plugin --dev
 npm install webpack-auto-i18n-plugin --save-dev
 # 或
 yarn add webpack-auto-i18n-plugin --dev
+```
+
+
+#### **⚡ Rsbuild 项目:**
+
+```bash
+npm install rsbuild-auto-i18n-plugin --save-dev
+# 或
+yarn add rsbuild-auto-i18n-plugin --dev
 ```
 
 ---
@@ -193,13 +202,35 @@ module.exports = {
 }
 ```
 
+
+#### **Rsbuild 配置示例** (rsbuild.config.js):
+
+```javascript
+const rsbuildPluginsAutoI18n = require('rsbuild-auto-i18n-plugin')
+const { YoudaoTranslator } = require('rsbuild-auto-i18n-plugin')
+
+export default defineConfig({
+  plugins: [
+    pluginReact(),
+    rsbuildPluginsAutoI18n({
+      targetLangList: ['en'],
+      translator: new YoudaoTranslator({
+            appId: '4cdb9baea8066fef',
+            appKey: 'ONI6AerZnGRyDqr3w7UM730mPuF8mB3j'
+        })
+    })
+  ],
+});
+
+```
+
 ---
 
 ### 4️⃣ 翻译器配置示例 🛠️
 
 插件默认使用谷歌翻译（默认配置代理端口7890）。在网络不支持访问谷歌的情况下，我们推荐使用 **有道翻译** ✨，其翻译效果优秀。目前插件已经内置谷歌、有道和百度翻译功能。如果需要自定义翻译器，可参考下方的示例。
 
-以下示例以 `vite` 为例，`webpack` 与其类似。
+以下示例以 `vite` 为例，`webpack`、`rsbuild` 与其类似。
 
 #### **使用谷歌翻译（默认）**
 
