@@ -1,0 +1,162 @@
+{
+	"byx25g6": {
+		"zh-cn": "你好，世界！",
+		"en": "Hello, World!"
+	},
+	"n8gtu2j": {
+		"zh-cn": "欢迎使用 Rsbuild 自动翻译插件",
+		"en": "Welcome to Rsbuild Auto Translation Plugin"
+	},
+	"w7urzii": {
+		"zh-cn": "这是一个功能强大的前端国际化解决方案",
+		"en": "This is a powerful frontend internationalization solution"
+	},
+	"jqpded6": {
+		"zh-cn": "支持多种框架",
+		"en": "Support Multiple Frameworks"
+	},
+	"untjke6": {
+		"zh-cn": "自动检测文本",
+		"en": "Auto Text Detection"
+	},
+	"10hf376": {
+		"zh-cn": "多种翻译服务",
+		"en": "Multiple Translation Services"
+	},
+	"lhj1ss6": {
+		"zh-cn": "无需修改源码",
+		"en": "No Source Code Changes Required"
+	},
+	"bvhu6tg": {
+		"zh-cn": "Rsbuild 自动翻译插件测试",
+		"en": "Rsbuild Auto Translation Plugin Test"
+	},
+	"c88ip8b": {
+		"zh-cn": "测试各种翻译场景和功能",
+		"en": "Test Various Translation Scenarios and Features"
+	},
+	"i7yr724": {
+		"zh-cn": "语言切换",
+		"en": "Language Switching"
+	},
+	"dure2": {
+		"zh-cn": "中文",
+		"en": "Chinese"
+	},
+	"w0vm9f6": {
+		"zh-cn": "当前语言: ",
+		"en": "Current Language: "
+	},
+	"jtwnmz8": {
+		"zh-cn": "基础文本翻译测试",
+		"en": "Basic Text Translation Test"
+	},
+	"auhwoqa": {
+		"zh-cn": "JSX 属性翻译测试",
+		"en": "JSX Attribute Translation Test"
+	},
+	"kuepb57": {
+		"zh-cn": "请输入您的姓名",
+		"en": "Please enter your name"
+	},
+	"793cl65": {
+		"zh-cn": "姓名输入框",
+		"en": "Name input field"
+	},
+	"ekblbq4": {
+		"zh-cn": "点击提交",
+		"en": "Click to submit"
+	},
+	"heqc2": {
+		"zh-cn": "提交",
+		"en": "Submit"
+	},
+	"fmitlm4": {
+		"zh-cn": "示例图片",
+		"en": "Sample image"
+	},
+	"huxtgy8": {
+		"zh-cn": "列表渲染翻译测试",
+		"en": "List Rendering Translation Test"
+	},
+	"pg9azc5": {
+		"zh-cn": "插件特性：",
+		"en": "Plugin Features:"
+	},
+	"5tgll19": {
+		"zh-cn": "模板字符串翻译测试",
+		"en": "Template String Translation Test"
+	},
+	"84edlv9": {
+		"zh-cn": "当前计数器值为: ",
+		"en": "Current counter value: "
+	},
+	"l4wff5h": {
+		"zh-cn": "这是一个包含变量的句子，变量值: ",
+		"en": "This is a sentence with variables, variable value: "
+	},
+	"dfglq3": {
+		"zh-cn": "大于5",
+		"en": "greater than 5"
+	},
+	"f7n8355": {
+		"zh-cn": "小于等于5",
+		"en": "less than or equal to 5"
+	},
+	"940b3sb": {
+		"zh-cn": "点击增加计数 (+1)",
+		"en": "Click to increase count (+1)"
+	},
+	"ihg96g5": {
+		"zh-cn": "重置计数器",
+		"en": "Reset Counter"
+	},
+	"4vm22y8": {
+		"zh-cn": "条件渲染翻译测试",
+		"en": "Conditional Rendering Translation Test"
+	},
+	"leo7737": {
+		"zh-cn": "计数器已启动！",
+		"en": "Counter has started!"
+	},
+	"s9n8p45": {
+		"zh-cn": "当前值: ",
+		"en": "Current value: "
+	},
+	"qooz8ff": {
+		"zh-cn": "计数器尚未启动，请点击按钮开始",
+		"en": "Counter not started yet, please click button to begin"
+	},
+	"da0jpc8": {
+		"zh-cn": "复杂嵌套翻译测试",
+		"en": "Complex Nested Translation Test"
+	},
+	"ayfokg4": {
+		"zh-cn": "功能介绍",
+		"en": "Feature Introduction"
+	},
+	"3exrl21h": {
+		"zh-cn": "这个插件可以自动识别代码中的中文文本， 并将其替换为翻译函数调用。 支持 React、Vue 等主流框架。",
+		"en": "This plugin can automatically identify Chinese text in code and replace it with translation function calls. Supports mainstream frameworks like React and Vue."
+	},
+	"ccwk2c4": {
+		"zh-cn": "开始使用",
+		"en": "Get Started"
+	},
+	"ah8ozn4": {
+		"zh-cn": "了解更多",
+		"en": "Learn More"
+	},
+	"qthl86a": {
+		"zh-cn": "插件状态: 正在运行",
+		"en": "Plugin Status: Running"
+	},
+	"8wquflt": {
+		"zh-cn": "翻译服务: EmptyTranslator (仅扫描模式)",
+		"en": "Translation Service: EmptyTranslator (Scan Only Mode)"
+	},
+	"t89tv4m": {
+		"zh-cn": "构建工具: Rsbuild + Rspack",
+		"en": "Build Tool: Rsbuild + Rspack"
+	}
+}

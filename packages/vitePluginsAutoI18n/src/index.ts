@@ -90,6 +90,7 @@ export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
             await translateUtils.autoTranslate()
         },
         async closeBundle() {
+            translateUtils.cleanupUnusedTranslations()
             // 翻译配置写入主文件
             await fileUtils.buildSetLangConfigToIndexFile()
             console.info('翻译完成✔')

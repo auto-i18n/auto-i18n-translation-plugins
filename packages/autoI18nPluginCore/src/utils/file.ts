@@ -66,7 +66,7 @@ export function initTranslateBasicFnFile() {
         }
         try {
             // 使用更安全的正则表达式替换方式
-            return val.replace(/\\$\\{(\\d+)\\}/g, (match, index) => {
+            return val.replace(/\\$(?:\\{|\\｛)(\\d+)(?:\\}|\\｝)/g, (match, index) => {
                 // 将index转换为数字
                 const position = parseInt(index, 10);
                 // 如果args[position]存在则替换，否则保留原占位符
@@ -194,11 +194,20 @@ export function getLangObjByJSONFileWithLangKey(
     key: string,
     insertJSONObj: object | undefined = undefined
 ) {
+    // 获取翻译配置对象，优先使用传入的配置，否则从本地文件读取
     const JSONObj = insertJSONObj || JSON.parse(getLangTranslateJSONFile())
-    const langObj: any = {}
-    Object.keys(JSONObj).forEach(value => {
-        langObj[value] = JSONObj[value][key]
+
+    // 初始化语言映射对象，用于存储不同语言的hash: value映射
+    const langObj: Record<string, any> = {}
+
+    // 遍历hash，提取hash对应语言key的值，并写入到langObj
+    Object.keys(JSONObj).forEach(langCode => {
+        langObj[langCode] = JSONObj[langCode][key]
     })
+
+    // 返回当前语言的hash: value映射对象
+    // 例如: 'zh-cn' > {'hash1': '你好', 'hash2': '世界'}
+    // 'en' > {'hash1': 'hello', 'hash2': 'world'}
     return langObj
 }
 
