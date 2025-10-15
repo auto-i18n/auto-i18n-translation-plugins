@@ -65,7 +65,6 @@ npm install webpack-auto-i18n-plugin --save-dev
 yarn add webpack-auto-i18n-plugin --dev
 ```
 
-
 #### **⚡ Rsbuild 项目:**
 
 ```bash
@@ -202,7 +201,6 @@ module.exports = {
 }
 ```
 
-
 #### **Rsbuild 配置示例** (rsbuild.config.js):
 
 ```javascript
@@ -210,18 +208,17 @@ const rsbuildPluginsAutoI18n = require('rsbuild-auto-i18n-plugin')
 const { YoudaoTranslator } = require('rsbuild-auto-i18n-plugin')
 
 export default defineConfig({
-  plugins: [
-    pluginReact(),
-    rsbuildPluginsAutoI18n({
-      targetLangList: ['en'],
-      translator: new YoudaoTranslator({
-            appId: '4cdb9baea8066fef',
-            appKey: 'ONI6AerZnGRyDqr3w7UM730mPuF8mB3j'
+    plugins: [
+        pluginReact(),
+        rsbuildPluginsAutoI18n({
+            targetLangList: ['en'],
+            translator: new YoudaoTranslator({
+                appId: '4cdb9baea8066fef',
+                appKey: 'ONI6AerZnGRyDqr3w7UM730mPuF8mB3j'
+            })
         })
-    })
-  ],
-});
-
+    ]
+})
 ```
 
 ---

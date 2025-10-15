@@ -1,23 +1,23 @@
 {
-  "name": "rsbuild-react",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "rsbuild build",
-    "dev": "rsbuild dev --open",
-    "preview": "rsbuild preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@rsbuild/core": "^1.5.6",
-    "@rsbuild/plugin-react": "^1.4.0",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "typescript": "^5.9.2",
-    "rsbuild-auto-i18n-plugin": "workspace:*"
-  }
+    "name": "rsbuild-react",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "rsbuild build",
+        "dev": "rsbuild dev --open",
+        "preview": "rsbuild preview"
+    },
+    "dependencies": {
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
+    },
+    "devDependencies": {
+        "@rsbuild/core": "^1.5.6",
+        "@rsbuild/plugin-react": "^1.4.0",
+        "@types/react": "^18.3.18",
+        "@types/react-dom": "^18.3.5",
+        "typescript": "^5.9.2",
+        "rsbuild-auto-i18n-plugin": "workspace:*"
+    }
 }

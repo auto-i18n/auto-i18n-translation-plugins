@@ -1,7 +1,7 @@
-import { defineConfig } from 'rollup'
+import nodeExternals from 'rollup-plugin-node-externals'
 import typescript from '@rollup/plugin-typescript'
 import { babel } from '@rollup/plugin-babel'
-import nodeExternals from 'rollup-plugin-node-externals'
+import { defineConfig } from 'rollup'
 import dts from 'rollup-plugin-dts'
 
 export default defineConfig([

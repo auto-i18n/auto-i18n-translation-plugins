@@ -24,7 +24,7 @@ const allowedExtensions = ['.vue', '.ts', '.js', '.tsx', '.jsx']
  */
 export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildPlugin {
     const name = 'rsbuild-auto-i18n-plugin'
-    
+
     // 初始化插件配置
     initOption(optionInfo)
 
@@ -55,65 +55,73 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
             })
 
             // 创建动态正则表达式匹配所有支持的文件扩展名
-            const extensionsPattern = new RegExp(`\\.(${[...allowedExtensions, ...(option.insertFileExtensions || [])].map(ext => ext.slice(1)).join('|')})$`)
-            
-            api.transform({ test: extensionsPattern, order:'post' }, async ({ code, resourcePath }: { code: string; resourcePath: string }) => {
-                // 白名单检查
-                if (
-                    option.includePath.length &&
-                    !baseUtils.checkAgainstRegexArray(resourcePath, option.includePath)
-                ) {
-                    return { code }
-                }
+            const extensionsPattern = new RegExp(
+                `\\.(${[...allowedExtensions, ...(option.insertFileExtensions || [])].map(ext => ext.slice(1)).join('|')})$`
+            )
 
-                // 黑名单检查
-                if (
-                    option.excludedPath.length &&
-                    baseUtils.checkAgainstRegexArray(resourcePath, option.excludedPath)
-                ) {
-                    return { code }
-                }
-
-                // 设置源语言
-                FunctionFactoryOption.originLang = option.originLang
-
-                // 处理扩展功能
-                let sourceObj
-                if (option.translateExtends) {
-                    sourceObj = await option.translateExtends?.handleInitFile(code, resourcePath)
-                } else {
-                    sourceObj = {
-                        source: code
-                    }
-                }
-
-                try {
-                    // 使用 Babel 进行 AST 转换
-                    const result = await babel.transformAsync(sourceObj.source, {
-                        configFile: false,
-                        plugins: [filter.default(sourceObj)]
-                    })
-
-                    // 开发模式下执行实时翻译
-                    if (isDevMode) {
-                        translateUtils.autoTranslate() // 执行前需要确保transformAsync已经完成
+            api.transform(
+                { test: extensionsPattern, order: 'post' },
+                async ({ code, resourcePath }: { code: string; resourcePath: string }) => {
+                    // 白名单检查
+                    if (
+                        option.includePath.length &&
+                        !baseUtils.checkAgainstRegexArray(resourcePath, option.includePath)
+                    ) {
+                        return { code }
                     }
 
-                    return {
-                        code: result?.code || code
+                    // 黑名单检查
+                    if (
+                        option.excludedPath.length &&
+                        baseUtils.checkAgainstRegexArray(resourcePath, option.excludedPath)
+                    ) {
+                        return { code }
                     }
-                } catch (e) {
-                    console.error('Rsbuild auto-i18n plugin transform error:', e)
-                    return { code }
-                }
-            })
 
-            // 构建开始前 
+                    // 设置源语言
+                    FunctionFactoryOption.originLang = option.originLang
+
+                    // 处理扩展功能
+                    let sourceObj
+                    if (option.translateExtends) {
+                        sourceObj = await option.translateExtends?.handleInitFile(
+                            code,
+                            resourcePath
+                        )
+                    } else {
+                        sourceObj = {
+                            source: code
+                        }
+                    }
+
+                    try {
+                        // 使用 Babel 进行 AST 转换
+                        const result = await babel.transformAsync(sourceObj.source, {
+                            configFile: false,
+                            plugins: [filter.default(sourceObj)]
+                        })
+
+                        // 开发模式下执行实时翻译
+                        if (isDevMode) {
+                            translateUtils.autoTranslate() // 执行前需要确保transformAsync已经完成
+                        }
+
+                        return {
+                            code: result?.code || code
+                        }
+                    } catch (e) {
+                        console.error('Rsbuild auto-i18n plugin transform error:', e)
+                        return { code }
+                    }
+                }
+            )
+
+            // 构建开始前
             api.onBeforeBuild(() => {
                 console.info('Rsbuild 构建阶段批量翻译开始')
             })
 
-            // 构建结束后 
+            // 构建结束后
             api.onAfterBuild(async () => {
                 console.info('构建阶段批量翻译')
                 await translateUtils.autoTranslate()
