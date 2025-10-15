@@ -3,7 +3,7 @@
 // 导入 auto-i18n-plugin-core 提供的工具和类型
 import {
     fileUtils,
-    translateUtils, // 暂时注释掉，等待 core 包修复
+    translateUtils,
     OptionInfo,
     option,
     initOption,
