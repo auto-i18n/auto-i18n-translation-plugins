@@ -243,3 +243,8 @@ export function cloneDeep<T>(value: T, cache: WeakMap<object, any> = new WeakMap
 
     return clone as T
 }
+/*
+ * 生成绿色和红色的控制台输出函数
+ */
+export const green = (s: string) => `\x1b[32m${s}\x1b[0m`
+export const red = (s: string) => `\x1b[31m${s}\x1b[0m`

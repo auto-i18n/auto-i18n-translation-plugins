@@ -114,6 +114,7 @@ export default class webpackPluginsAutoI18n {
         if (webpackVersion.majorVersion >= 5) {
             // webpack 5 使用 tapPromise
             compiler.hooks.emit.tapPromise('webpackPluginsAutoI18n', async _compilation => {
+                // 替换为 core 提供的批量执行函数，输出由 core 统一负责
                 await this.performTranslation()
             })
         } else {
@@ -136,17 +137,17 @@ export default class webpackPluginsAutoI18n {
      * 执行翻译任务的统一方法
      */
     private async performTranslation() {
-        // 输出构建阶段开始批量翻译的信息
-        console.info('构建阶段批量翻译')
-
-        // 清理多余的翻译配置JSON文件
+        // 清理多余的翻译配置JSON文件（静默）
         translateUtils.cleanupUnusedTranslations()
 
-        // 执行自动翻译任务
-        await translateUtils.autoTranslate()
+        // 使用 core 中的批量执行函数，统一处理输出与错误
+        await translateUtils.runAutoTranslateBatch()
 
-        // 输出翻译完成的信息
-        console.info('翻译完成✔')
+        // 写入主文件按需执行，避免空写入
+        if (translateUtils.hasTranslationChanges) {
+            await fileUtils.buildSetLangConfigToIndexFile()
+        }
+        // 不在此处打印成功/失败信息，输出由 core.runAutoTranslateBatch() 统一处理
     }
 
     /**
