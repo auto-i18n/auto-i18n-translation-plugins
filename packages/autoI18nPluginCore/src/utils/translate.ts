@@ -5,10 +5,10 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/utils/translate.ts
  */
 
+import { baseUtils, chunkUtils } from '.'
 import { option } from 'src/option'
 import * as fileUtils from './file'
 import Progress from 'progress'
-import { chunkUtils } from '.'
 
 export const SEPARATOR = '\n┇┇┇\n'
 export const SPLIT_SEPARATOR_REGEX = /\n┇ *┇ *┇\n/
@@ -300,4 +300,50 @@ export function cleanupUnusedTranslations() {
         }
     })
     fileUtils.setLangTranslateJSONFile(baseObj)
+}
+
+/*
+ * 批量调用的防抖控制
+ */
+let pendingPaths = new Set<string>()
+let debounceTimer: NodeJS.Timeout | null = null
+const DEBOUNCE_MS = 250
+export async function runAutoTranslateBatch() {
+    const files = Array.from(pendingPaths)
+    pendingPaths.clear()
+    try {
+        const res = await autoTranslate()
+        const errors = res?.errors || []
+        if (errors.length) {
+            // 统一红色输出：文件列表 + 错误详情（取第一条即可，已包含预期/实际）
+            const first = errors[0]
+            if (files.length) {
+                console.error(
+                    baseUtils.red(
+                        `${files.join('\n')} 翻译出错：不完整，预期${first.expected}，实际${first.actual}`
+                    )
+                )
+            } else {
+                console.error(
+                    baseUtils.red(`翻译出错：不完整，预期${first.expected}，实际${first.actual}`)
+                )
+            }
+        } else if (res?.hasChanges) {
+            console.log(baseUtils.green('翻译完成'))
+        } else {
+            // 无新内容统一提示（可改为静默）
+            console.log(baseUtils.green('当前没有需要翻译的新内容'))
+        }
+    } catch (e) {
+        console.error(baseUtils.red(`翻译任务异常：${e instanceof Error ? e.message : String(e)}`))
+    }
+}
+
+export function scheduleAutoTranslate(path?: string) {
+    if (path) pendingPaths.add(path)
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+        debounceTimer = null
+        runAutoTranslateBatch()
+    }, DEBOUNCE_MS)
 }

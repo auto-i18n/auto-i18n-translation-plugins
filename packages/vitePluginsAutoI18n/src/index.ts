@@ -21,51 +21,6 @@ export * from 'auto-i18n-plugin-core'
 
 const allowedExtensions = ['.vue', '.ts', '.js', '.tsx', '.jsx']
 
-// 新增：统一颜色输出工具
-const green = (s: string) => `\x1b[32m${s}\x1b[0m`
-const red = (s: string) => `\x1b[31m${s}\x1b[0m`
-
-// 新增：批量调用的防抖控制
-let pendingPaths = new Set<string>()
-let debounceTimer: NodeJS.Timeout | null = null
-const DEBOUNCE_MS = 250
-
-async function runAutoTranslateBatch() {
-    const files = Array.from(pendingPaths)
-    pendingPaths.clear()
-    try {
-        const res = await translateUtils.autoTranslate()
-        const errors = res?.errors || []
-        if (errors.length) {
-            // 统一红色输出：文件列表 + 错误详情（取第一条即可，已包含预期/实际）
-            const first = errors[0]
-            if (files.length) {
-                console.error(
-                    red(`${files.join('\n')} 翻译出错:预期${first.expected}，实际${first.actual}`)
-                )
-            } else {
-                console.error(red(`翻译出错:预期${first.expected}，实际${first.actual}`))
-            }
-        } else if (res?.hasChanges) {
-            console.log(green('翻译完成'))
-        } else {
-            // 可改为不输出；当前实现输出一次绿色提示
-            console.log(green('当前没有需要翻译的新内容'))
-        }
-    } catch (e) {
-        console.error(red(`翻译任务异常：${e instanceof Error ? e.message : String(e)}`))
-    }
-}
-
-function scheduleAutoTranslate(path?: string) {
-    if (path) pendingPaths.add(path)
-    if (debounceTimer) clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(() => {
-        debounceTimer = null
-        runAutoTranslateBatch()
-    }, DEBOUNCE_MS)
-}
-
 export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
     const name = 'vite-auto-i18n-plugin'
     let config: ResolvedConfig
@@ -122,7 +77,7 @@ export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
                     .then(result => {
                         if (config?.command === 'serve') {
                             // 改为批量防抖调用，避免多次输出
-                            scheduleAutoTranslate(path)
+                            translateUtils.scheduleAutoTranslate(path)
                         }
                         return result?.code
                     })
@@ -133,7 +88,7 @@ export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
         },
         async buildEnd() {
             // 构建阶段批量翻译与统一输出
-            await runAutoTranslateBatch()
+            await translateUtils.runAutoTranslateBatch()
         },
         async closeBundle() {
             translateUtils.cleanupUnusedTranslations()
