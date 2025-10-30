@@ -123,7 +123,6 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
 
             // 构建结束后：批量翻译并统一输出
             api.onAfterBuild(async () => {
-                console.info('构建阶段批量翻译')
                 await translateUtils.runAutoTranslateBatch()
             })
 
@@ -133,6 +132,7 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
                 if (translateUtils.hasTranslationChanges) {
                     await fileUtils.buildSetLangConfigToIndexFile()
                 }
+                // 不在此处重复打印“翻译完成”，已由 runAutoTranslateBatch 统一输出
             })
 
             // 开发服务器关闭时也需要清理并按需写入
@@ -141,7 +141,6 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
                 if (translateUtils.hasTranslationChanges) {
                     await fileUtils.buildSetLangConfigToIndexFile()
                 }
-                console.info('开发服务器关闭，翻译完成✔')
             })
         }
     }
