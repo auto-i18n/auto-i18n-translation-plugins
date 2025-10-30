@@ -513,6 +513,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 更新日志
 
+### v1.1.12 (推荐版本)
+
+-   优化控制台输出格式
+
 ### v1.1.11 (推荐版本)
 
 -   优化控制台输出格式，减少冗余打印

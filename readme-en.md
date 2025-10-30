@@ -508,6 +508,10 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+### v1.1.12 (Recommended Version)
+
+-   Optimized console output format
+
 ### v1.1.11 (Recommended Version)
 
 -   Optimized console output format, reduced redundant printing
