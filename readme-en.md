@@ -55,7 +55,7 @@ npm install vite-auto-i18n-plugin --save-dev
 yarn add vite-auto-i18n-plugin --dev
 ```
 
-#### **🛠️ Webpack Project:**
+#### **🛠️ Webpack Project (Compatible with Webpack 4/5):**
 
 ```bash
 npm install webpack-auto-i18n-plugin --save-dev
@@ -506,11 +506,17 @@ Since v1.0.5, simply import the generated `index.js` in your entry file - no nee
 
 Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
+## Changelog
+
+### v1.1.11 (Recommended Version)
+
+-   Optimized console output format, reduced redundant printing
+-   Added translation progress bar display
+-   Support for Webpack 4
+
 ### v1.1.10 (Recommended Version)
 
 -   Added rsbuild plugin
-
-## Changelog
 
 ### v1.1.9 (Recommended Version)
 
