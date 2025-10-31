@@ -10,7 +10,7 @@ const path = require('path')
 
 const webpackPluginsAutoI18n = require('webpack-auto-i18n-plugin')
 
-const { EmptyTranslator, Vue2Extends } = require('webpack-auto-i18n-plugin')
+const { EmptyTranslator } = require('webpack-auto-i18n-plugin')
 
 const i18nPlugin = new webpackPluginsAutoI18n.default({
     globalPath: './lang',
@@ -20,7 +20,6 @@ const i18nPlugin = new webpackPluginsAutoI18n.default({
     rewriteConfig: false,
     targetLangList: ['en', 'ko', 'ja', 'ru'],
     originLang: 'zh-cn',
-    translateExtends: new Vue2Extends(),
     translator: new EmptyTranslator({})
 })
 
