@@ -76,7 +76,8 @@ export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
                     })
                     .then(result => {
                         if (config?.command === 'serve') {
-                            translateUtils.autoTranslate() // 执行前需要确保transformAsync已经完成
+                            // 改为批量防抖调用，避免多次输出
+                            translateUtils.scheduleAutoTranslate(path)
                         }
                         return result?.code
                     })
@@ -86,14 +87,16 @@ export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
             }
         },
         async buildEnd() {
-            console.info('构建阶段批量翻译')
-            await translateUtils.autoTranslate()
+            // 构建阶段批量翻译与统一输出
+            await translateUtils.runAutoTranslateBatch()
         },
         async closeBundle() {
             translateUtils.cleanupUnusedTranslations()
-            // 翻译配置写入主文件
-            await fileUtils.buildSetLangConfigToIndexFile()
-            console.info('翻译完成✔')
+            // 仅在有变更时写入主文件，避免空写入污染工作区
+            if (translateUtils.hasTranslationChanges) {
+                await fileUtils.buildSetLangConfigToIndexFile()
+            }
+            // 不在此处重复打印“翻译完成”，防止多次输出
         }
     }
 

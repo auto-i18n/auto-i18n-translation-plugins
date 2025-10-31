@@ -101,9 +101,9 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
                             plugins: [filter.default(sourceObj)]
                         })
 
-                        // 开发模式下执行实时翻译
+                        // 开发模式下：改为批量防抖调用，避免每次 transform 都触发完整翻译流程与重复输出
                         if (isDevMode) {
-                            translateUtils.autoTranslate() // 执行前需要确保transformAsync已经完成
+                            translateUtils.scheduleAutoTranslate(resourcePath)
                         }
 
                         return {
@@ -116,29 +116,31 @@ export default function rsbuildPluginsAutoI18n(optionInfo: OptionInfo): RsbuildP
                 }
             )
 
-            // 构建开始前
+            // 构建开始前（保留简短提示或可删除）
             api.onBeforeBuild(() => {
                 console.info('Rsbuild 构建阶段批量翻译开始')
             })
 
-            // 构建结束后
+            // 构建结束后：批量翻译并统一输出
             api.onAfterBuild(async () => {
                 console.info('构建阶段批量翻译')
-                await translateUtils.autoTranslate()
+                await translateUtils.runAutoTranslateBatch()
             })
 
-            // 构建完全结束
+            // 构建完全结束：清理并按需写入主文件（避免空写入）
             api.onCloseBuild(async () => {
                 translateUtils.cleanupUnusedTranslations()
-                // 翻译配置写入主文件
-                await fileUtils.buildSetLangConfigToIndexFile()
-                console.info('翻译完成✔')
+                if (translateUtils.hasTranslationChanges) {
+                    await fileUtils.buildSetLangConfigToIndexFile()
+                }
             })
 
-            // 开发服务器关闭时也需要清理
+            // 开发服务器关闭时也需要清理并按需写入
             api.onCloseDevServer(async () => {
                 translateUtils.cleanupUnusedTranslations()
-                await fileUtils.buildSetLangConfigToIndexFile()
+                if (translateUtils.hasTranslationChanges) {
+                    await fileUtils.buildSetLangConfigToIndexFile()
+                }
                 console.info('开发服务器关闭，翻译完成✔')
             })
         }

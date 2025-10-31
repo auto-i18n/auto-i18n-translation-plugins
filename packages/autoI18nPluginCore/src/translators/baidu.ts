@@ -73,8 +73,13 @@ export class BaiduTranslator extends Translator {
                         proxy: option.proxy
                     }
                 )
-
-                const translatedTexts = response.data?.trans_result
+                if (!response.data?.trans_result) {
+                    console.error(
+                        '百度翻译请求失败，请检查您的appId和appKey是否正确，或查看响应信息：',
+                        response.data
+                    )
+                }
+                const translatedTexts = (response.data?.trans_result || [])
                     .map((item: any) => item.dst)
                     .filter((_item: string, index: number) => index % 2 === 0)
                     .join(separator)

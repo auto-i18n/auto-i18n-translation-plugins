@@ -5,17 +5,26 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/utils/translate.ts
  */
 
+import { baseUtils, chunkUtils } from '.'
 import { option } from 'src/option'
 import * as fileUtils from './file'
 import Progress from 'progress'
-import { chunkUtils } from '.'
 
 export const SEPARATOR = '\n┇┇┇\n'
 export const SPLIT_SEPARATOR_REGEX = /\n┇ *┇ *┇\n/
 
-type langObj = { [key: string]: string }
+type LangObj = { [key: string]: string }
 
-export let langObj: langObj = {}
+let langObj: LangObj = {}
+
+// 对外暴露“是否有翻译变更”的标记，供插件在 closeBundle 时决定是否写入索引文件
+export let hasTranslationChanges = false
+
+// 统一的返回类型，供插件侧统一输出
+export type AutoTranslateResult = {
+    hasChanges: boolean
+    errors: Array<{ expected: number; actual: number; lang?: string; extra?: string }>
+}
 
 /**
  * @description: 设置翻译对象属性
@@ -42,7 +51,7 @@ export function getLangObj() {
  * @param {langObj} obj
  * @return {*}
  */
-export function initLangObj(obj: langObj) {
+export function initLangObj(obj: LangObj) {
     if (!Object.keys(langObj)) {
         langObj = obj
     }
@@ -62,10 +71,11 @@ export function initLangObj(obj: langObj) {
  * - 翻译结果不完整时中断流程
  * - 文件读写失败时明确报错
  */
-export async function autoTranslate() {
+export async function autoTranslate(): Promise<AutoTranslateResult> {
     const enabled = typeof option.enabled === 'function' ? option.enabled() : option.enabled
+    if (!enabled) return { hasChanges: false, errors: [] }
 
-    if (!enabled) return
+    hasTranslationChanges = false
 
     // 初始化现有翻译文件缓存
     const originLangObjMap: Record<string, any> = {}
@@ -88,14 +98,13 @@ export async function autoTranslate() {
 
     // 无新内容提前退出
     if (Object.keys(transLangObj).length === 0) {
-        console.info('✅ 当前没有需要翻译的新内容')
-        return
+        // 无新内容：不写入、不输出，由插件侧统一处理提示
+        return { hasChanges: false, errors: [] }
     }
 
     // 初始化翻译结果存储结构
     const newLangObjMap: Record<string, (string | number)[]> = {}
-
-    console.info('开始自动翻译...')
+    const errors: AutoTranslateResult['errors'] = []
 
     // 遍历所有目标语言进行处理
     for (let langIndex = 0; langIndex < option.langKey.length; langIndex++) {
@@ -107,36 +116,32 @@ export async function autoTranslate() {
             continue
         }
 
-        // ─── 分块翻译流程开始 ───
-        const translatedValues = await translateChunks(transLangObj, option.langKey[langIndex])
-        // ─── 分块翻译流程结束 ───=
+        // 分块翻译 + 进度条（仅临时输出）
+        const translatedValues = await translateChunks(transLangObj, currentLang)
 
-        // ─── 翻译结果校验 ───
+        // 校验数量是否一致，不一致则终止并返回错误信息
         if (translatedValues.length !== Object.keys(transLangObj).length) {
-            console.error(
-                '❌ 使用付费翻译时，请检查翻译API额度是否充足，或是否已申请对应翻译API使用权限'
-            )
-            console.error(`❌ 翻译结果不完整
-                预期数量: ${Object.keys(transLangObj).length}
-                实际数量: ${translatedValues.length}
-                样例数据: ${JSON.stringify(translatedValues.slice(0, 3))}`)
-            return
+            errors.push({
+                extra: '❌ 使用付费翻译时，请检查翻译API额度是否充足，或是否已申请对应翻译API使用权限',
+                expected: Object.keys(transLangObj).length,
+                actual: translatedValues.length,
+                lang: currentLang
+            })
+            return { hasChanges: false, errors }
         }
 
         // 存储当前语言翻译结果
         newLangObjMap[currentLang] = translatedValues
-        console.info(`✅ ${currentLang} 翻译完成`)
     }
 
-    // ─── 合并翻译结果到配置 ───
+    // 合并结果
     Object.keys(transLangObj).forEach((key: any, index) => {
         option.langKey.forEach(item => {
             originLangObjMap[item][key] = newLangObjMap[item][index]
         })
     })
 
-    // ─── 生成最终配置文件结构 ───
-    console.log('📄 构建配置文件数据结构...')
+    // 生成配置结构并写入
     const configLangObj: Record<string, Record<string, string>> = {}
     Object.keys(originLangObjMap[option.originLang]).forEach(key => {
         configLangObj[key] = {}
@@ -145,13 +150,14 @@ export async function autoTranslate() {
         })
     })
 
-    // ─── 写入文件系统 ───
+    // 仅在真正有新增内容时写入文件
     try {
         fileUtils.setLangTranslateJSONFile(configLangObj)
-        console.info('🎉 多语言配置文件已成功更新')
+        hasTranslationChanges = true
+        return { hasChanges: true, errors: [] }
     } catch (error) {
-        console.error('❌ 配置文件写入失败，原因:', error)
-        // todo 可添加重试逻辑或回滚机制
+        // 抛出让上层统一处理异常输出
+        throw error
     }
 }
 
@@ -225,7 +231,6 @@ export async function completionTranslateAndWriteConfigFile(
         curLangObj[key] = newLangObjMap[index]
     })
 
-    console.log('开始写入JSON配置文件...')
     const configLangObj: any = JSON.parse(fileUtils.getLangTranslateJSONFile())
 
     Object.keys(transLangObj).forEach(key => {
@@ -233,6 +238,7 @@ export async function completionTranslateAndWriteConfigFile(
     })
     try {
         fileUtils.setLangTranslateJSONFile(configLangObj)
+        hasTranslationChanges = true
         console.info('JSON配置文件写入成功⭐️⭐️⭐️')
     } catch (error) {
         console.error('❌JSON配置文件写入失败' + error)
@@ -333,4 +339,58 @@ export function cleanupUnusedTranslations() {
         }
     })
     fileUtils.setLangTranslateJSONFile(baseObj)
+}
+
+/*
+ * 批量调用的防抖控制
+ */
+let pendingPaths = new Set<string>()
+let debounceTimer: NodeJS.Timeout | null = null
+const DEBOUNCE_MS = 250
+export async function runAutoTranslateBatch() {
+    const files = Array.from(pendingPaths)
+    pendingPaths.clear()
+    try {
+        console.info('开始自动翻译...')
+        const res = await autoTranslate()
+        const errors = res?.errors || []
+        if (errors.length) {
+            // 统一红色输出：文件列表 + 错误详情
+            const first = errors[0]
+            const errorMsg = []
+
+            if (files.length) {
+                errorMsg.push('处理以下文件时发生异常：')
+                files.forEach(file => errorMsg.push(`  - ${file}`))
+                errorMsg.push('')
+            }
+
+            errorMsg.push(
+                `❌ 翻译异常：返回结果不完整，预期文字数量: ${first.expected}，实际文字数量: ${first.actual}，目标语言: ${first.lang}`
+            )
+            if (first.extra) {
+                errorMsg.push(first.extra)
+            }
+
+            console.error(baseUtils.red(errorMsg.join('\n')))
+        } else if (res?.hasChanges) {
+            console.log(baseUtils.green('✅ 翻译完成'))
+        } else {
+            // 无新内容统一提示（可改为静默）
+            console.log(baseUtils.green('ℹ️  当前没有需要翻译的新内容'))
+        }
+    } catch (e) {
+        console.error(
+            baseUtils.red(`❌ 翻译任务异常：${e instanceof Error ? e.message : String(e)}`)
+        )
+    }
+}
+
+export function scheduleAutoTranslate(path?: string) {
+    if (path) pendingPaths.add(path)
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+        debounceTimer = null
+        runAutoTranslateBatch()
+    }, DEBOUNCE_MS)
 }

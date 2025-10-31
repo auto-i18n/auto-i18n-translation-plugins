@@ -57,7 +57,7 @@ npm install vite-auto-i18n-plugin --save-dev
 yarn add vite-auto-i18n-plugin --dev
 ```
 
-#### **🛠️ Webpack 项目:**
+#### **🛠️ Webpack 项目 (兼容 Webpack 4/5):**
 
 ```bash
 npm install webpack-auto-i18n-plugin --save-dev
@@ -512,6 +512,16 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 原始作者：wenps、xu-code、Caleb-Xu、Winfans
 
 ## 更新日志
+
+### v1.1.12 (推荐版本)
+
+-   优化控制台输出格式
+
+### v1.1.11 (推荐版本)
+
+-   优化控制台输出格式，减少冗余打印
+-   新增翻译进度条显示
+-   支持 Webpack 4
 
 ### v1.1.10 (推荐版本)
 
