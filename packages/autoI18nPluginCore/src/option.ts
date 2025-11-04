@@ -122,7 +122,11 @@ const DEFAULT_OPTION = {
     /**
      * 是否保留空格
      */
-    isClearSpace: true
+    isClearSpace: true,
+    /**
+     * 语言json存储模式：'merged'（所有语言合并到一个json）或 'split'（每种语言单独一个json）
+     */
+    languageJsonMode: 'merged' as 'merged' | 'split'
 }
 
 /**
