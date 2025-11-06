@@ -5,7 +5,7 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/utils/index.ts
  */
 export * as baseUtils from './base'
-export * as fileUtils from './file'
+export * as fileUtils from './file/index'
 export * as translateUtils from './translate'
 export * as jsonUtils from './json'
 export * as chunkUtils from './chunk'
