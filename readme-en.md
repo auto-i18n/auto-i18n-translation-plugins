@@ -386,6 +386,7 @@ import '../lang/index.js' // 📍 Must be imported on the first line of the entr
 | insertFileExtensions | string[]   | ❌       | `[]`                     | List of file extensions to insert translation code into                                                                      |
 | isClear              | boolean    | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context), only supported in build mode |
 | isClearSpace         | boolean    | ❌       | `false`                  | Whether to remove whitespace from both ends of source strings, whitespace is preserved by default                            |
+| languageJsonMode     | string     | ❌       | `'merged'`               | Language JSON storage mode: `'merged'` (all languages in one index.json) or `'split'` (separate json file for each language) |
 
 ---
 
@@ -474,6 +475,12 @@ To update translations, simply modify `index.json`.
     - `index.json` in `globalPath` is the core translation file
     - Changes take effect immediately after saving
 
+4. **JSON Storage Mode Switching** ⚠️
+
+    - When switching `languageJsonMode` config (`merged` ↔ `split`), it's **strongly recommended** to set `rewriteConfig` to `true`.
+    - This ensures the plugin regenerates config files and avoids errors caused by conflicts between old and new mode files.
+    - After switching modes, the plugin will automatically handle JSON file merging or splitting.
+
 ---
 
 ## 📦 User Group
@@ -507,6 +514,10 @@ Since v1.0.5, simply import the generated `index.js` in your entry file - no nee
 Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
+
+### v1.1.13 (Recommended Version)
+
+-   Added JSON split configuration
 
 ### v1.1.12 (Recommended Version)
 

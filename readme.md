@@ -389,6 +389,7 @@ import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文�
 | insertFileExtensions | string[]   | ❌   | `[]`                     | 要插入翻译代码的文件扩展名列表                                                              |
 | isClear              | boolean    | ❌   | `false`                  | 是否清除已经不在上下文中的内容（清除项目中不再使用到的源语言键值对）,仅仅支持打包模式下使用 |
 | isClearSpace         | boolean    | ❌   | `false`                  | 是否清除源字符串中左右两边的空格，默认会保留空格                                            |
+| languageJsonMode     | string     | ❌   | `'merged'`               | 语言JSON存储模式：`'merged'`（所有语言合并到一个index.json）或 `'split'`（每种语言单独一个json文件） |
 
 ---
 
@@ -479,6 +480,12 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
     - `globalPath` 目录中的 `index.json` 是核心翻译文件。
     - 修改并保存后，您的翻译内容将立即更新。
 
+4. **JSON 存储模式切换** ⚠️
+
+    - 当切换 `languageJsonMode` 配置（`merged` ↔ `split`）时，**强烈建议**将 `rewriteConfig` 设置为 `true`。
+    - 这样可以确保插件重新生成配置文件，避免新旧模式文件冲突导致的错误。
+    - 切换模式后，插件会自动处理 JSON 文件的合并或拆分。
+
 ---
 
 ## 📦 用户群
@@ -512,6 +519,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 原始作者：wenps、xu-code、Caleb-Xu、Winfans
 
 ## 更新日志
+
+### v1.1.13 (推荐版本)
+
+-   新增json拆分配置
 
 ### v1.1.12 (推荐版本)
 

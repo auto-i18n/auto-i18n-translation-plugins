@@ -5,9 +5,9 @@
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/utils/translate.ts
  */
 
+import * as fileUtils from './file/index'
 import { baseUtils, chunkUtils } from '.'
 import { option } from 'src/option'
-import * as fileUtils from './file'
 import Progress from 'progress'
 
 export const SEPARATOR = '\n┇┇┇\n'
