@@ -72,7 +72,7 @@ export default function vitePluginsAutoI18n(optionInfo: OptionInfo) {
                     })
                     .then(result => {
                         if (config?.command === 'serve') {
-                            translateUtils.autoTranslate() // 执行前需要确保transformAsync已经完成
+                            translateUtils.autoTranslate(false) // 执行前需要确保transformAsync已经完成
                         }
                         return result?.code
                     })

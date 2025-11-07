@@ -29,8 +29,9 @@ export const sourceTextSet = new Set<string>()
  * 异常处理：
  * - 翻译结果不完整时中断流程
  * - 文件读写失败时明确报错
+ * @param [all=true] 是否翻译所有文本
  */
-export async function autoTranslate() {
+export async function autoTranslate(all = true) {
     const enabled = typeof option.enabled === 'function' ? option.enabled() : option.enabled
 
     if (!enabled) return
@@ -46,11 +47,25 @@ export async function autoTranslate() {
     } catch (e) {
         jsonObj = {}
     }
-    const { langKey, originLang } = option
+
+    if (option.isClear) {
+        if (all) {
+            const sourceHashSet = new Set(Array.from(sourceTextSet).map(text => generateId(text)))
+            Object.keys(jsonObj).forEach(key => {
+                if (!sourceHashSet.has(key)) {
+                    delete jsonObj[key]
+                }
+            })
+        } else {
+            console.warn('⚠️ 当前模式下 isClear 选项无法激活')
+        }
+    }
 
     /** 待翻译内容，key为目标语言，value为源语言数组 */
     const transLangMap: Record<string, string[]> = {}
+    const { langKey, originLang } = option
     langKey.forEach(key => (transLangMap[key] = []))
+
     sourceTextSet.forEach(text => {
         const hash = generateId(text)
         const langObj = (jsonObj[hash] ||= { [originLang]: text })
