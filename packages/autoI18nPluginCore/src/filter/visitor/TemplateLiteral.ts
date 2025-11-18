@@ -9,9 +9,6 @@ import { TranslateTypeEnum } from 'src/enums'
 import { option } from 'src/option'
 import types from '@babel/types'
 
-// 定义一个包含亚洲语言代码的数组
-const asianLangs = ['zh-cn', 'ja', 'ko']
-
 export default function (insertOption: any) {
     return function (path: any) {
         // 如果是半自动翻译，不做处理
@@ -41,14 +38,10 @@ export default function (insertOption: any) {
 
 // 处理模板元素
 function handleTemplateElement(node: types.TemplateElement, insertOption: any) {
-    let value = node.value.raw || node.value.cooked // 获取模板字符串的值
-    if (asianLangs.some(lang => option.originLang.includes(lang) || option.originLang === lang)) {
-        try {
-            value = baseUtils.unicodeToString(value || '')
-        } catch (error) {
-            console.log('转换异常')
-        }
-    }
+    let value = node.value.cooked || node.value.raw // 获取模板字符串的值
+
+    // ✅ Babel 会自动解码 Unicode，无需手动转换
+
     // 是否存在来源语言字符，是否在默认字符串中，是否包含过滤字段
     if (
         value &&

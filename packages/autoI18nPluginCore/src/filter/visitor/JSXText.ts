@@ -19,17 +19,9 @@ export default function (insertOption: any) {
 
         let { node } = path
         let value = node.value
-        // 定义一个包含亚洲语言代码的数组
-        const asianLangs = ['zh-cn', 'ja', 'ko']
-        if (
-            asianLangs.some(lang => option.originLang.includes(lang) || option.originLang === lang)
-        ) {
-            try {
-                value = baseUtils.unicodeToString(value)
-            } catch (error) {
-                console.log('转换异常')
-            }
-        }
+
+        // ✅ Babel 会自动解码 Unicode，无需手动转换
+
         if (
             baseUtils.hasOriginSymbols(value) &&
             option.excludedPattern.length &&

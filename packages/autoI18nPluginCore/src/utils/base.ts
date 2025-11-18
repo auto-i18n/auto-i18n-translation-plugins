@@ -176,17 +176,6 @@ export function generateId(key: string) {
 }
 
 /**
- * @description: unicode转普通字符串
- * @param {string} str
- * @return {*}
- */
-export const unicodeToString = (str: string) => {
-    return str.replace(/\\u[\dA-Fa-f]{4}/g, (match: any) => {
-        return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16))
-    })
-}
-
-/**
  * @description: 有道翻译 标识截取
  * @param {string} q
  * @return {*}

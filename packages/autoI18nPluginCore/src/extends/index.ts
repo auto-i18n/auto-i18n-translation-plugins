@@ -14,7 +14,7 @@ export type BaseExtendsType = {
      * @param option - 选项对象，包含多个参数
      * @param option.option - 选项信息，类型为 OptionInfo
      * @param option.hash - 哈希值
-     * @param option.value - 默认传入的值，可能经过了 unicode 转码
+     * @param option.value - 默认传入的值（Babel 已自动解码 Unicode）
      * @param option.uncodeValue - value 转码之后的值
      * @param option.namespace - 命名空间
      * @param initFileResult - 处理入口文件时返回的对象
@@ -39,7 +39,7 @@ export type BaseExtendsType = {
      * @param option - 选项对象，包含多个参数
      * @param option.option - 选项信息，类型为 OptionInfo
      * @param option.hash - 哈希值
-     * @param option.value - 默认传入的值，可能经过了 unicode 转码
+     * @param option.value - 默认传入的值（Babel 已自动解码 Unicode）
      * @param option.uncodeValue - value 转码之后的值
      * @param option.namespace - 命名空间
      * @param initFileResult - 处理入口文件时返回的对象
