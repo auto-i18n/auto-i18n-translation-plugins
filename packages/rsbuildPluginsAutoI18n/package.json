@@ -1,11 +1,12 @@
 {
-    "name": "vite-auto-i18n-plugin",
+    "name": "rsbuild-auto-i18n-plugin",
     "version": "1.1.10",
-    "description": "Vite automatic translation plugin compatible with Rollup",
+    "description": "Rsbuild automatic translation plugin compatible with Rspack",
     "keywords": [
         "i18n",
         "auto i18n",
-        "vite i18n",
+        "rsbuild i18n",
+        "rspack i18n",
         "vue i18n",
         "react i18n"
     ],
@@ -26,7 +27,7 @@
         "type": "git",
         "url": "git@github.com:wenps/auto-i18n-translation-plugins.git"
     },
-    "author": "wenps,xu-code,Winfans,caleb-xu",
+    "author": "callqh",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/wenps/auto-i18n-translation-plugins/issues"
@@ -50,10 +51,9 @@
         "rollup-plugin-dts": "^6.1.0",
         "rollup-plugin-node-externals": "^7.1.2",
         "typescript": "^5.1.6",
-        "vite": "^2.8.6",
-        "vite-plugin-legacy": "^2.1.0"
+        "@rsbuild/core": "^1.0.0"
     },
-    "volta": {
-        "extends": "../../package.json"
+    "peerDependencies": {
+        "@rsbuild/core": ">=1.0.0"
     }
 }

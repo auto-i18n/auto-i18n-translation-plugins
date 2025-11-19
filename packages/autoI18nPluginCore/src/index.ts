@@ -23,7 +23,4 @@ export const initCore = async (optionInfo: OptionInfo) => {
     if (!checkOption()) throw new Error('Invalid option configuration')
 
     initLangFile()
-    // const originLangObj = getLangObjByJSONFileWithLangKey(option.originLang) // FIXME: 待优化
-    // initLangObj(originLangObj)
-    // await languageConfigCompletion(option.originLang)
 }

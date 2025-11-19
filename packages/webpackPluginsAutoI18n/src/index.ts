@@ -93,6 +93,7 @@ export default class webpackPluginsAutoI18n {
         compiler.hooks.emit.tapPromise('webpackPluginsAutoI18n', async _compilation => {
             // 输出构建阶段开始批量翻译的信息
             console.info('构建阶段批量翻译')
+            // 清理多余的翻译配置JSON文件
             // 执行自动翻译任务
             await translateUtils.autoTranslate()
             // 输出翻译完成的信息

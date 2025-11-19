@@ -131,8 +131,8 @@ export function createI18nTranslator(createOption: {
     // 从全局配置对象 option 中获取命名空间
     const nameSpace = option.namespace
     // 去除 value 字符串首尾的空白字符
-    const trimmedValue = value.trim()
-    // 将去除空白后的字符串中的单引号替换为双引号，并将换行符替换为转义字符 \n
+    const trimmedValue = option.isClearSpace ? value : value.trim()
+    // 将字符串中的单引号替换为双引号，并将换行符替换为转义字符 \n
     const valStr = trimmedValue.replace(/'/g, '"').replace(/(\n)/g, '\\n')
     // 若 key 存在则使用 key，否则调用 generateId 函数根据 valStr 生成唯一的键
     const generatedKey = key || generateId(valStr)

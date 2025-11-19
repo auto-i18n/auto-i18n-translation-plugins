@@ -18,9 +18,23 @@ import { baseUtils } from '.'
  * @param separatorRegex - 用于分割字符串的正则表达式。
  * @returns 分割并拼接后的字符串数组。
  */
+/**
+ * 这个函数的主要功能是根据给定的正则表达式分割字符串，并对分割结果进行特殊处理。
+ * 处理过程分为三个主要步骤：
+ *
+ * 1. 首先根据分隔符正则和标点符号正则进行初步分割
+ * 2. 然后将连续的标点符号和符合分隔符正则的部分重新连接
+ * 3. 最后将不符合分隔符正则的相邻部分合并
+ *
+ * @param str - 需要分割的源字符串
+ * @param separatorRegex - 用于分割的正则表达式
+ * @returns 处理后的字符串数组
+ */
 export function splitByRegex(str: string, separatorRegex: RegExp): string[] {
+    if (str.includes('\n')) console.log(str, separatorRegex)
+
     // 定义标点符号的正则表达式
-    const punctuationRegex = /[，。？！《》,.．：!?""''；‘“、0-9]/
+    const punctuationRegex = /[，。？！《》,.．：!?""''；'"、0-9\n\r\t\v\f]/
     // 创建一个新的正则表达式，用于分割字符串
     const splitRegex = new RegExp(
         `(${separatorRegex.source}|${punctuationRegex.source})`,
@@ -33,7 +47,7 @@ export function splitByRegex(str: string, separatorRegex: RegExp): string[] {
     let currentMatch = ''
 
     // 定义连接标点符号的正则表达式
-    const connectPunctuationRegex = /[，。？！《》,.．：!?；‘“、0-9]/
+    const connectPunctuationRegex = /[，。？！《》,.．：!?；'"、0-9]/
     // 创建一个新的正则表达式，用于检测是否需要连接
     const connectRegex = new RegExp(
         `(${separatorRegex.source}|${connectPunctuationRegex.source})`,
