@@ -10,6 +10,8 @@ import { OriginLangKeyEnum, TranslateTypeEnum } from './enums'
 import { BaseExtendsType } from './extends'
 import { cloneDeep } from './utils/base'
 
+type PathType = string | RegExp
+
 const EXCLUDED_CALL = [
     '$deepScan',
     'console.info',
@@ -40,10 +42,10 @@ const DEFAULT_OPTION = {
     excludedPattern: [/\.\w+$/],
 
     /** 排查不需要翻译的目录下的文件路径（黑名单）, 默认不处理node_modules */
-    excludedPath: ['node_modules'] as string[],
+    excludedPath: ['node_modules'] as PathType[],
 
     /** 指定需要翻译文件的目录路径正则（白名单） */
-    includePath: [/src\//, /src\\/],
+    includePath: [/src\//, /src\\/] as PathType[],
 
     /** 配置文件生成位置，默认为 './lang' */
     globalPath: './lang',

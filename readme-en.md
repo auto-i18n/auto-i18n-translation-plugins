@@ -362,30 +362,30 @@ import '../lang/index.js' // 📍 Must be imported on the first line of the entr
 
 ## ⚙️ Configuration Parameters
 
-| Parameter            | Type       | Required | Default                  | Description                                                                                                                  |
-| -------------------- | ---------- | -------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| enabled              | boolean    | ❌       | `true`                   | Whether to trigger translation.                                                                                              |
-| translateType        | string     | ❌       | `full-auto`              | Translation mode: `full-auto` or `semi-auto`                                                                                 |
-| translateKey         | string     | ✅       | `$t`                     | Translation function name (e.g., `$t`)                                                                                       |
-| excludedCall         | string[]   | ❌       | `['$i8n', 'require', …]` | Function calls to exclude from translation                                                                                   |
-| excludedPattern      | RegExp[]   | ❌       | `[/\.\w+$/]`             | Patterns to exclude (e.g., file extensions)                                                                                  |
-| excludedPath         | string[]   | ❌       | `['node_modules']`       | Directories to exclude (e.g., `node_modules`)                                                                                |
-| includePath          | RegExp[]   | ❌       | `[/src\//]`              | Whitelist of directories to include (default: `src`)                                                                         |
-| globalPath           | string     | ❌       | `'./lang'`               | Path for translation config files                                                                                            |
-| distPath             | string     | ✅       | `''`                     | Output path for built files                                                                                                  |
-| distKey              | string     | ✅       | `'index'`                | Main translation file name                                                                                                   |
-| namespace            | string     | ✅       | `lang`                   | Project namespace for distinguishing translation configs                                                                     |
-| originLang           | string     | ✅       | `'zh-cn'`                | Source language                                                                                                              |
-| targetLangList       | string[]   | ✅       | `['en']`                 | Target languages                                                                                                             |
-| buildToDist          | boolean    | ❌       | `false`                  | Whether to bundle translation files into main build                                                                          |
-| translator           | Translator | ❌       | `GoogleTranslator`       | Translator instance                                                                                                          |
-| translatorOption     | object     | ❌       | `{}`                     | Translator options (lower priority than `translator`)                                                                        |
-| rewriteConfig        | boolean    | ❌       | `true`                   | Whether to rewrite config file on each plugin run                                                                            |
-| deepScan             | boolean    | ❌       | `false`                  | Experimental: Whether to perform deep string scanning                                                                        |
-| commonTranslateKey   | string     | ❌       | `''`                     | General translation key                                                                                                      |
-| insertFileExtensions | string[]   | ❌       | `[]`                     | List of file extensions to insert translation code into                                                                      |
-| isClear              | boolean    | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context), only supported in build mode |
-| isClearSpace         | boolean    | ❌       | `false`                  | Whether to remove whitespace from both ends of source strings, whitespace is preserved by default                            |
+| Parameter            | Type                 | Required | Default                  | Description                                                                                                                  |
+| -------------------- | -------------------- | -------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| enabled              | boolean              | ❌       | `true`                   | Whether to trigger translation.                                                                                              |
+| translateType        | string               | ❌       | `full-auto`              | Translation mode: `full-auto` or `semi-auto`                                                                                 |
+| translateKey         | string               | ✅       | `$t`                     | Translation function name (e.g., `$t`)                                                                                       |
+| excludedCall         | string[]             | ❌       | `['$i8n', 'require', …]` | Function calls to exclude from translation                                                                                   |
+| excludedPattern      | RegExp[]             | ❌       | `[/\.\w+$/]`             | Patterns to exclude (e.g., file extensions)                                                                                  |
+| excludedPath         | (string \| RegExp)[] | ❌       | `['node_modules']`       | Directories to exclude (e.g., `node_modules`)                                                                                |
+| includePath          | (string \| RegExp)[] | ❌       | `[/src\//]`              | Whitelist of directories to include (default: `src`)                                                                         |
+| globalPath           | string               | ❌       | `'./lang'`               | Path for translation config files                                                                                            |
+| distPath             | string               | ✅       | `''`                     | Output path for built files                                                                                                  |
+| distKey              | string               | ✅       | `'index'`                | Main translation file name                                                                                                   |
+| namespace            | string               | ✅       | `lang`                   | Project namespace for distinguishing translation configs                                                                     |
+| originLang           | string               | ✅       | `'zh-cn'`                | Source language                                                                                                              |
+| targetLangList       | string[]             | ✅       | `['en']`                 | Target languages                                                                                                             |
+| buildToDist          | boolean              | ❌       | `false`                  | Whether to bundle translation files into main build                                                                          |
+| translator           | Translator           | ❌       | `GoogleTranslator`       | Translator instance                                                                                                          |
+| translatorOption     | object               | ❌       | `{}`                     | Translator options (lower priority than `translator`)                                                                        |
+| rewriteConfig        | boolean              | ❌       | `true`                   | Whether to rewrite config file on each plugin run                                                                            |
+| deepScan             | boolean              | ❌       | `false`                  | Experimental: Whether to perform deep string scanning                                                                        |
+| commonTranslateKey   | string               | ❌       | `''`                     | General translation key                                                                                                      |
+| insertFileExtensions | string[]             | ❌       | `[]`                     | List of file extensions to insert translation code into                                                                      |
+| isClear              | boolean              | ❌       | `false`                  | Whether to clear content not in context (clear source language key-value pairs not in context), only supported in build mode |
+| isClearSpace         | boolean              | ❌       | `false`                  | Whether to remove whitespace from both ends of source strings, whitespace is preserved by default                            |
 
 ---
 
