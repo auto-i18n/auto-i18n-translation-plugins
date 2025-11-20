@@ -8,7 +8,8 @@ import {
     FunctionFactoryOption,
     initCore
 } from 'auto-i18n-plugin-core'
-import webpack from 'webpack'
+// 兼容 webpack 4 和 5 的导入方式
+import * as webpack from 'webpack'
 // 导入 path 模块，用于处理文件和目录路径
 import path from 'path'
 
@@ -24,6 +25,7 @@ const allowedExtensions = ['.vue', '.tsx', '.jsx', '.js', '.ts']
 
 /**
  * Webpack 插件实现，用于自动化处理国际化翻译功能
+ * 兼容 webpack 4 和 5
  */
 export default class webpackPluginsAutoI18n {
     /**
@@ -43,9 +45,13 @@ export default class webpackPluginsAutoI18n {
 
     /**
      * Webpack 插件核心方法，用于集成到编译流程中
+     * 兼容 webpack 4 和 5
      * @param compiler Webpack 编译器实例
      */
     apply(compiler: webpack.Compiler) {
+        // 检测 webpack 版本
+        const webpackVersion = this.getWebpackVersion(compiler)
+
         /**
          * 检查是否已经添加过这个自定义 Loader，避免重复添加
          * @param rule Webpack 模块规则
@@ -89,16 +95,65 @@ export default class webpackPluginsAutoI18n {
 
         /**
          * 在构建阶段执行翻译任务
+         * 兼容 webpack 4 和 5 的 emit hook
          */
-        compiler.hooks.emit.tapPromise('webpackPluginsAutoI18n', async _compilation => {
-            // 输出构建阶段开始批量翻译的信息
-            console.info('构建阶段批量翻译')
-            // 清理多余的翻译配置JSON文件
-            // 执行自动翻译任务
-            await translateUtils.autoTranslate()
-            // 输出翻译完成的信息
-            console.info('翻译完成✔')
-        })
+        if (webpackVersion.majorVersion >= 5) {
+            // webpack 5 使用 tapPromise
+            compiler.hooks.emit.tapPromise('webpackPluginsAutoI18n', async _compilation => {
+                await this.performTranslation()
+            })
+        } else {
+            // webpack 4 兼容处理
+            compiler.hooks.emit.tapAsync(
+                'webpackPluginsAutoI18n',
+                async (_compilation, callback) => {
+                    try {
+                        await this.performTranslation()
+                        callback()
+                    } catch (error) {
+                        callback(error as Error)
+                    }
+                }
+            )
+        }
+    }
+
+    /**
+     * 执行翻译任务的统一方法
+     */
+    private async performTranslation() {
+        // 输出构建阶段开始批量翻译的信息
+        console.info('构建阶段批量翻译')
+
+        // 执行自动翻译任务
+        await translateUtils.autoTranslate()
+
+        // 输出翻译完成的信息
+        console.info('翻译完成✔')
+    }
+
+    /**
+     * 获取 webpack 版本信息
+     * @param compiler webpack 编译器实例
+     * @returns 版本信息对象
+     */
+    private getWebpackVersion(compiler: any): { version: string; majorVersion: number } {
+        let webpackVersion: string
+
+        try {
+            // 尝试从 compiler.webpack.version 获取 (webpack 5)
+            webpackVersion = compiler.webpack?.version || require('webpack/package.json').version
+        } catch {
+            // 降级处理，假设是 webpack 4
+            webpackVersion = '4.0.0'
+        }
+
+        const majorVersion = parseInt(webpackVersion.split('.')[0])
+
+        return {
+            version: webpackVersion,
+            majorVersion
+        }
     }
 }
 

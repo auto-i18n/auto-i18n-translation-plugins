@@ -55,5 +55,8 @@
     },
     "peerDependencies": {
         "@rsbuild/core": ">=1.0.0"
+    },
+    "volta": {
+        "extends": "../../package.json"
     }
 }
