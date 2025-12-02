@@ -231,20 +231,21 @@ function generateTranslateBasicFnText(): string {
  * @description: 检查文件是否需要更新
  */
 function shouldUpdateFile(filePath: string, newContent: string): boolean {
-    if (!fs.existsSync(filePath)) {
-        return true
-    }
-
+    // 如果要重写配置
     if (option.rewriteConfig) {
-        return true
+        if (!fs.existsSync(filePath)) {
+            return true
+        }
+
+        // 哈希比对
+        const currentHash = generateId(newContent)
+        const existingContent = fs.readFileSync(filePath, 'utf-8')
+        const existingHash = generateId(existingContent)
+
+        return currentHash !== existingHash
+    } else {
+        return false
     }
-
-    // 哈希比对
-    const currentHash = generateId(newContent)
-    const existingContent = fs.readFileSync(filePath, 'utf-8')
-    const existingHash = generateId(existingContent)
-
-    return currentHash !== existingHash
 }
 
 /**
