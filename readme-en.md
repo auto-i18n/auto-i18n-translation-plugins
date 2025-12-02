@@ -515,7 +515,11 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
-### v1.1.13 (Recommended Version)
+### v1.1.14 (Recommended Version)
+
+-   Fixed rewriteConfig exception issue
+
+### v1.1.13 (Not Recommended Version)
 
 -   Added JSON split configuration
 
