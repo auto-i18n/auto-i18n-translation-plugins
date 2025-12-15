@@ -9,6 +9,7 @@
 // @ts-check
 import { TypeDirNameMap } from './enums.js'
 import { writeFile } from 'fs/promises'
+import readline from 'readline'
 import shell from 'shelljs'
 import chalk from 'chalk'
 import path from 'path'
@@ -58,8 +59,11 @@ const run = async () => {
     // 提交代码
     await commitCode(newVersion)
 
+    // 提示输入 OTP
+    const otp = await promptOTP()
+
     // 上传包
-    uploadPackage(versionType)
+    uploadPackage(versionType, otp)
 }
 
 /**
@@ -156,13 +160,32 @@ const generateVersion = async (versionType, pkgName = '') => {
 /**
  * 上传包到包管理器
  */
-const uploadPackage = versionType => {
+const uploadPackage = (versionType, otp = '') => {
     console.log(chalk.green`\n开始上传包\n`)
 
     for (let key in TypeDirNameMap) {
         const tag = versionType === VersionTypeEnum.BETA ? '--tag beta' : ''
-        shell.exec(`cd ${`packages/${TypeDirNameMap[key]}`} && ${publishCmd} ${tag}`)
+        const otpParam = otp ? `--otp ${otp}` : ''
+        shell.exec(`cd ${`packages/${TypeDirNameMap[key]}`} && ${publishCmd} ${tag} ${otpParam}`)
     }
+}
+
+/**
+ * 提示用户输入 OTP 验证码
+ * @returns {Promise<string>} OTP 验证码
+ */
+const promptOTP = () => {
+    return new Promise(resolve => {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        })
+
+        rl.question(chalk.yellow('\n请输入 npm 两步验证码 (OTP)，如不需要请直接回车: '), answer => {
+            rl.close()
+            resolve(answer.trim())
+        })
+    })
 }
 
 /** 动态读取 package.json 文件的函数 */
