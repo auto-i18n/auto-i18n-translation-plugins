@@ -172,7 +172,7 @@ const uploadPackage = (versionType, otp = '') => {
 
     for (let key in TypeDirNameMap) {
         const tag = versionType === VersionTypeEnum.BETA ? '--tag beta' : ''
-        const otpParam = otp ? `--otp ${otp}` : ''
+        const otpParam = otp ? `--otp=${otp}` : ''
         shell.exec(`cd ${`packages/${TypeDirNameMap[key]}`} && ${publishCmd} ${tag} ${otpParam}`)
     }
 }
@@ -204,7 +204,7 @@ const promptOTP = () => {
 const confirmPublish = (versionType, otp) => {
     return new Promise(resolve => {
         const tag = versionType === VersionTypeEnum.BETA ? '--tag beta' : ''
-        const otpParam = otp ? `--otp ${otp}` : ''
+        const otpParam = otp ? `--otp=${otp}` : ''
 
         console.log(chalk.cyan('\n即将执行的发布命令:'))
         for (let key in TypeDirNameMap) {
