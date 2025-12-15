@@ -520,6 +520,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 更新日志
 
+### v1.1.15 (推荐版本)
+
+-   补充node14兼容
+
 ### v1.1.14 (推荐版本)
 
 -   修复rewriteConfig异常问题

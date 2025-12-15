@@ -515,6 +515,10 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+### v1.1.15 (Recommended Version)
+
+-   Added Node 14 compatibility
+
 ### v1.1.14 (Recommended Version)
 
 -   Fixed rewriteConfig exception issue
