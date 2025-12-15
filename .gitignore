@@ -32,6 +32,3 @@ build
 example/**/dist
 packages/**/dist
 packages/**/readme*
-
-# npm token config
-.npmrc
