@@ -38,6 +38,7 @@
         "@babel/generator": "^7.26.2",
         "@babel/preset-env": "^7.23.2",
         "@babel/preset-typescript": "^7.23.2",
+        "@babel/runtime": "^7.23.2",
         "@vitalets/google-translate-api": "^9.2.0",
         "axios": "^1.6.8",
         "crypto-js": "^4.2.0",
@@ -45,6 +46,7 @@
         "tunnel": "0.0.6"
     },
     "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.23.2",
         "@babel/types": "^7.23.0",
         "@rollup/plugin-alias": "^5.1.0",
         "@rollup/plugin-babel": "^6.0.4",
@@ -62,6 +64,9 @@
         "rollup-plugin-node-externals": "^7.1.2",
         "rollup-plugin-terser": "^7.0.2",
         "typescript": "^5.1.6"
+    },
+    "engines": {
+        "node": ">=14.18.0"
     },
     "volta": {
         "extends": "../../package.json"

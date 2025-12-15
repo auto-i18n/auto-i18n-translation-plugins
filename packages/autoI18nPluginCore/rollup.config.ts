@@ -4,14 +4,14 @@
  * @LastEditTime: 2025-02-13 15:49:56
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/rollup.config.ts
  */
-import { defineConfig } from 'rollup'
-import typescript from '@rollup/plugin-typescript'
-import path from 'node:path'
-import { fileURLToPath } from 'url'
-import dts from 'rollup-plugin-dts'
 import externals from 'rollup-plugin-node-externals'
-import babel from '@rollup/plugin-babel'
+import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
+import babel from '@rollup/plugin-babel'
+import { defineConfig } from 'rollup'
+import dts from 'rollup-plugin-dts'
+import { fileURLToPath } from 'url'
+import path from 'node:path'
 
 const input = resolve('./src/index.ts')
 
@@ -41,17 +41,21 @@ const buildConfig = defineConfig({
             target: 'ES5' // 兼容低版本 JavaScript
         }),
         babel({
-            babelHelpers: 'bundled',
+            babelHelpers: 'runtime', // 使用 runtime 来管理 Babel helpers
             extensions: ['.js', '.ts'], // 支持 TypeScript 和 JavaScript 文件的转译
             presets: [
                 [
                     '@babel/preset-env',
                     {
-                        targets: '> 0.25%, not dead', // 兼容广泛支持的 JavaScript 环境
-                        corejs: 3,
-                        useBuiltIns: 'entry' // 按需引入 core-js（比如支持 Promise 等新功能）
+                        targets: {
+                            node: '14.18.0' // 明确指定 Node 14.18+ 兼容性
+                        },
+                        useBuiltIns: false // 库不应该注入 polyfills，由用户处理
                     }
                 ]
+            ],
+            plugins: [
+                '@babel/plugin-transform-runtime' // 使用 runtime 避免编译问题
             ]
         }),
         terser() // 压缩输出的代码

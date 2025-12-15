@@ -59,6 +59,9 @@
     "optionalDependencies": {
         "webpack-sources": "^1.4.3 || ^3.2.3"
     },
+    "engines": {
+        "node": ">=14.18.0"
+    },
     "volta": {
         "extends": "../../package.json"
     }
