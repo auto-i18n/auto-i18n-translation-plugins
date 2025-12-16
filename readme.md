@@ -385,7 +385,7 @@ import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文�
 | translatorOption     | object     | ❌   | `{}`                     | 翻译器的配置项，优先级低于`translator`                                                      |
 | rewriteConfig        | boolean    | ❌   | `true`                   | 插件每次运行时是否重写配置文件                                                              |
 | deepScan             | boolean    | ❌   | `false`                  | 实验性属性，表示是否进行深层扫描字符串                                                      |
-| commonTranslateKey   | string     | ❌   | `''`                     | 通用翻译key                                                                                 |
+| commonTranslateKey   | string     | ❌   | `''`                     | 通用翻译key，用于多个不同命名空间的项目共享同一个语言设置。当设置该值后，语言切换会优先读取localStorage中commonTranslateKey对应的语言，实现跨项目的统一语言管理 |
 | insertFileExtensions | string[]   | ❌   | `[]`                     | 要插入翻译代码的文件扩展名列表                                                              |
 | isClear              | boolean    | ❌   | `false`                  | 是否清除已经不在上下文中的内容（清除项目中不再使用到的源语言键值对）,仅仅支持打包模式下使用 |
 | isClearSpace         | boolean    | ❌   | `false`                  | 是否清除源字符串中左右两边的空格，默认会保留空格                                            |
