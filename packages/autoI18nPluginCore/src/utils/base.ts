@@ -156,7 +156,7 @@ export function createI18nTranslator(createOption: {
         ])
     }
 
-    return `${option.translateKey}('${generatedKey}','${valStr}','${nameSpace}')`
+    return { key: generatedKey, node: `${option.translateKey}('${generatedKey}','${valStr}','${nameSpace}')` }
 }
 
 /**
