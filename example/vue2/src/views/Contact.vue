@@ -32,10 +32,12 @@
                 </a-form>
             </div>
         </div>
+        <p>{{ msg }}</p>
     </div>
 </template>
 
 <script>
+// 测试模板字符串中，不能包含单引号时，会导致转换的key 不一致问题
 export default {
     name: 'Contact',
     data() {
@@ -44,7 +46,12 @@ export default {
                 name: '',
                 email: '',
                 message: ''
-            }
+            },
+            msg: `
+            我是一个模板字符串，
+            我说：'这个模板字符串中包含单引号'
+            我又说:"而且还包含双引号"
+            `
         }
     },
     methods: {
@@ -52,6 +59,9 @@ export default {
             console.log('提交表单:', this.form)
             // 这里添加表单提交逻辑
         }
+    },
+    mounted() {
+        console.log('Contact mounted')
     }
 }
 </script>

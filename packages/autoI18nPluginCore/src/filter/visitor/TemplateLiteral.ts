@@ -50,15 +50,13 @@ function handleTemplateElement(node: types.TemplateElement, insertOption: any) {
         !baseUtils.checkAgainstRegexArray(value, [...option.excludedPattern])
     ) {
         // 生成字符类型翻译节点
-        let newNode = baseUtils.createI18nTranslator({
+        let { key: id, node: newNode } = baseUtils.createI18nTranslator({
             insertOption,
             value
         })
 
         // 替换为字符类型翻译节点
         node.value.raw = node.value.cooked = `\${${newNode}}`
-
-        let id = baseUtils.generateId(value)
 
         if (id && value) {
             translateUtils.setLangObj(id, value)
