@@ -515,6 +515,10 @@ Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
 
+### v1.1.16 (Recommended Version)
+
+-   Fixed issue where double quotes in template strings caused abnormal ID mapping generation
+
 ### v1.1.15 (Recommended Version)
 
 -   Added Node 14 compatibility

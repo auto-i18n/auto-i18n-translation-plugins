@@ -520,6 +520,10 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 
 ## 更新日志
 
+### v1.1.16 (推荐版本)
+
+-   修复模板字符串内部出现"导致生成id映射异常问题
+
 ### v1.1.15 (推荐版本)
 
 -   补充node14兼容
