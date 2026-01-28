@@ -171,3 +171,66 @@ export function convertToTemplateLiteral(strArray: string[], option?: any): type
     // console.log('deepScanCall', (generate as any).default(deepScanCall).code)
     return deepScanCall
 }
+
+/**
+ * 对模板字符串应用 deepScan 逻辑
+ * 遍历每个 quasi，对包含混合内容的部分应用切割算法，重建新的模板字符串节点
+ * 最终用 $deepScan() 包裹返回
+ */
+export function processTemplateLiteralDeepScan(
+    node: types.TemplateLiteral,
+    insertOption?: any
+): types.CallExpression {
+    const newQuasis: types.TemplateElement[] = []
+    const newExpressions: types.Expression[] = []
+    const originRegex = getOriginRegex()
+
+    node.quasis.forEach((quasi, quasiIndex) => {
+        const value = quasi.value.cooked || quasi.value.raw
+
+        // 如果不包含目标语言或不需要切割，保持原样
+        if (!value || !baseUtils.hasOriginSymbols(value) || !checkNeedSplit(value)) {
+            newQuasis.push(types.templateElement({ raw: value, cooked: value }, false))
+        } else {
+            // 应用切割算法，分离可翻译部分和非翻译部分
+            const splitResult = splitByRegex(value, originRegex)
+
+            splitResult.forEach((segment, segmentIndex) => {
+                if (originRegex.test(segment)) {
+                    // 可翻译部分：插入空 quasi 后添加 $t() 表达式
+                    if (segmentIndex === 0 && newExpressions.length === newQuasis.length) {
+                        newQuasis.push(types.templateElement({ raw: '', cooked: '' }, false))
+                    }
+                    newExpressions.push(
+                        baseUtils.createI18nTranslator({
+                            value: segment,
+                            isExpression: true,
+                            insertOption
+                        })
+                    )
+                } else {
+                    // 非翻译部分：保持为 quasi
+                    newQuasis.push(types.templateElement({ raw: segment, cooked: segment }, false))
+                }
+            })
+        }
+
+        // 插入原始表达式，保持其位置
+        if (quasiIndex < node.expressions.length) {
+            if (newExpressions.length === newQuasis.length) {
+                newQuasis.push(types.templateElement({ raw: '', cooked: '' }, false))
+            }
+            newExpressions.push(node.expressions[quasiIndex] as types.Expression)
+        }
+    })
+
+    // 确保 quasis.length === expressions.length + 1
+    if (newQuasis.length === newExpressions.length) {
+        newQuasis.push(types.templateElement({ raw: '', cooked: '' }, true))
+    } else if (newQuasis.length > newExpressions.length) {
+        newQuasis[newQuasis.length - 1].tail = true
+    }
+
+    const templateLiteral = types.templateLiteral(newQuasis, newExpressions)
+    return types.callExpression(types.identifier('$deepScan'), [templateLiteral])
+}

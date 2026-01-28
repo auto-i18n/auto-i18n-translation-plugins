@@ -4,7 +4,7 @@
  * @LastEditTime: 2025-03-31 02:29:02
  * @FilePath: /i18n_translation_vite/packages/autoI18nPluginCore/src/filter/visitor/TemplateElement.ts
  */
-import { baseUtils, translateUtils } from 'src/utils'
+import { baseUtils, splitUtils, translateUtils } from 'src/utils'
 import { TranslateTypeEnum } from 'src/enums'
 import { option } from 'src/option'
 import types from '@babel/types'
@@ -19,6 +19,10 @@ export default function (insertOption: any) {
 
         if (!node.quasis.length) return
 
+        if (types.isTaggedTemplateExpression(parent)) {
+            return
+        }
+
         // 获取真实调用函数
         const extractFnName = baseUtils.extractFunctionName(parent)
 
@@ -31,6 +35,16 @@ export default function (insertOption: any) {
                     option.excludedCall.includes(extractFnName?.split('.')?.pop() || '')))
         )
             return
+
+        // deepScan 模式: 智能切割包含混合内容的模版字符串
+        if (
+            option.deepScan &&
+            node.quasis.some(q => splitUtils.checkNeedSplit(q.value.cooked || q.value.raw))
+        ) {
+            const newNode = splitUtils.processTemplateLiteralDeepScan(node, insertOption)
+            path.replaceWith(newNode)
+            return
+        }
 
         node.quasis.forEach(item => handleTemplateElement(item, insertOption))
     }

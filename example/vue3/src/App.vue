@@ -155,7 +155,8 @@ const navLinks = ref([
     { path: '/', text: '首页' },
     { path: '/products', text: '产品' },
     { path: '/about', text: '关于' },
-    { path: '/contact', text: '联系我们' }
+    { path: '/contact', text: '联系我们' },
+    { path: '/deepscan-test', text: 'DeepScan测试' }
 ])
 </script>
 

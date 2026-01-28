@@ -414,5 +414,273 @@
 	"g5z62": {
 		"zh-cn": "小山",
 		"en": "Xiaoshan"
+	},
+	"67miqba": {
+		"zh-cn": "DeepScan测试",
+		"en": "DeepScan Test"
+	},
+	"mmna066d": {
+		"zh-cn": " FutureTech - 科技引领未来，创新驱动发展。在当今这个科技飞速发展的时代，FutureTech始终站在前沿，致力于为用户提供最先进、最优质的产品和服务。我们不断探索科技的边界，突破传统的束缚，用创新的思维和技术为用户带来前所未有的体验。无论是在人工智能、大数据、云计算还是其他领域，我们都有着深厚的技术积累和丰富的实践经验。我们相信，科技的力量是无穷的，它可以改变世界，让生活变得更加美好。因此，我们将继续努力，不断创新，为用户创造更多的价值。 ",
+		"en": " FutureTech - Technology leads the future, and innovation drives development. In this era of rapid technological development, FutureTech has always been at the forefront, committed to providing users with the most advanced and high-quality products and services. We constantly explore the boundaries of technology, break through the constraints of tradition, and bring users unprecedented experiences with innovative thinking and technology. Whether in artificial intelligence, big data, cloud computing or other fields, we have profound technical accumulation and rich practical experience. We believe that the power of technology is boundless. It can change the world and make life better. Therefore, we will continue to strive and keep innovating to create more value for our users. "
+	},
+	"5juqg38": {
+		"zh-cn": "我们的服务理念是",
+		"en": "Our service philosophy is"
+	},
+	"tih7qq9": {
+		"zh-cn": "用户至上，服务第一",
+		"en": "Customer first, service foremost"
+	},
+	"dr706u4": {
+		"zh-cn": "标题文本",
+		"en": "Title Text"
+	},
+	"kl2gs26": {
+		"zh-cn": "这是段落内容",
+		"en": "This is paragraph content"
+	},
+	"ekc52": {
+		"zh-cn": "北京",
+		"en": "Beijing"
+	},
+	"dzq52": {
+		"zh-cn": "你好",
+		"en": "Hello"
+	},
+	"dxbq2": {
+		"zh-cn": "世界",
+		"en": "World"
+	},
+	"myt3r1a": {
+		"zh-cn": "第一行内容：欢迎使用",
+		"en": "First line: Welcome to use"
+	},
+	"ck1pvqa": {
+		"zh-cn": "第二行内容：这是测试",
+		"en": "Second line: This is a test"
+	},
+	"qgijo2c": {
+		"zh-cn": "第三行内容：深度扫描功能",
+		"en": "Third line: Deep scan feature"
+	},
+	"gxw02": {
+		"zh-cn": "年龄",
+		"en": "Age"
+	},
+	"fg8k2": {
+		"zh-cn": "城市",
+		"en": "City"
+	},
+	"c1rj73": {
+		"zh-cn": "你好 ",
+		"en": "Hello "
+	},
+	"qf6rux6": {
+		"zh-cn": " 欢迎来到 ",
+		"en": " Welcome to "
+	},
+	"iyv5gf4": {
+		"zh-cn": "重要通知",
+		"en": "Important Notice"
+	},
+	"dz7z63": {
+		"zh-cn": "尊敬的",
+		"en": "Dear"
+	},
+	"wkotvk4": {
+		"zh-cn": "，您好！",
+		"en": ", Hello!"
+	},
+	"jj6h488": {
+		"zh-cn": "这是一条测试消息",
+		"en": "This is a test message"
+	},
+	"gt4ga96": {
+		"zh-cn": "第一项：学习",
+		"en": "First item: Study"
+	},
+	"eo4tqg6": {
+		"zh-cn": "第二项：工作",
+		"en": "Second item: Work"
+	},
+	"go1rc66": {
+		"zh-cn": "第三项：生活",
+		"en": "Third item: Life"
+	},
+	"hnv8r3": {
+		"zh-cn": "用户：",
+		"en": "User:"
+	},
+	"e5nc64": {
+		"zh-cn": "\"姓名\"",
+		"en": "\"Name\""
+	},
+	"f6w4w4": {
+		"zh-cn": "\"年龄\"",
+		"en": "\"Age\""
+	},
+	"dwoy44": {
+		"zh-cn": "\"城市\"",
+		"en": "\"City\""
+	},
+	"mdn4t4": {
+		"zh-cn": "\"邮箱\"",
+		"en": "\"Email\""
+	},
+	"fwhcv4": {
+		"zh-cn": "\"描述\"",
+		"en": "\"Description\""
+	},
+	"4421x5a": {
+		"zh-cn": "\"这是一个测试用户\"",
+		"en": "\"This is a test user\""
+	},
+	"f6qmm54": {
+		"zh-cn": "用户信息",
+		"en": "User Information"
+	},
+	"dlc5c3": {
+		"zh-cn": "姓名：",
+		"en": "Name:"
+	},
+	"emky23": {
+		"zh-cn": "年龄：",
+		"en": "Age:"
+	},
+	"i9t1": {
+		"zh-cn": "岁",
+		"en": "years old"
+	},
+	"bz10d04": {
+		"zh-cn": "居住地：",
+		"en": "Residence:"
+	},
+	"kqg6vx5": {
+		"zh-cn": "联系方式：",
+		"en": "Contact:"
+	},
+	"5proq67": {
+		"zh-cn": "最后更新时间：",
+		"en": "Last Updated:"
+	},
+	"mwn4b3": {
+		"zh-cn": "项目一",
+		"en": "Project One"
+	},
+	"mwn873": {
+		"zh-cn": "项目二",
+		"en": "Project Two"
+	},
+	"mwn4k3": {
+		"zh-cn": "项目三",
+		"en": "Project Three"
+	},
+	"fc7uq3": {
+		"zh-cn": "数据一",
+		"en": "Data One"
+	},
+	"fc7ym3": {
+		"zh-cn": "数据二",
+		"en": "Data Two"
+	},
+	"fc7uz3": {
+		"zh-cn": "数据三",
+		"en": "Data Three"
+	},
+	"j3rip3": {
+		"zh-cn": "结果：",
+		"en": "Result:"
+	},
+	"g3yc2": {
+		"zh-cn": "完成",
+		"en": "Completed"
+	},
+	"uekb0xg": {
+		"zh-cn": "DeepScan 模版字符串测试",
+		"en": "DeepScan Template String Test"
+	},
+	"p6pa93j": {
+		"zh-cn": "场景 1: HTML 标签 + 换行符",
+		"en": "Scenario 1: HTML tags + line breaks"
+	},
+	"fkchrpg": {
+		"zh-cn": "场景 2: 只有换行符的多行文本",
+		"en": "Scenario 2: Multi-line text with line breaks only"
+	},
+	"hhys6nf": {
+		"zh-cn": "场景 3: HTML 标签混合",
+		"en": "Scenario 3: Mixed HTML tags"
+	},
+	"f3pxylt": {
+		"zh-cn": "场景 4: 简单模版字符串 (不应该被 deepScan)",
+		"en": "Scenario 4: Simple template string (should not be deep scanned)"
+	},
+	"v4005xa": {
+		"zh-cn": "场景 5: 表格结构",
+		"en": "Scenario 5: Table structure"
+	},
+	"z2n9xne": {
+		"zh-cn": "场景 6: CSS 样式内联",
+		"en": "Scenario 6: Inline CSS styles"
+	},
+	"ha8ivga": {
+		"zh-cn": "场景 7: 列表结构",
+		"en": "Scenario 7: List structure"
+	},
+	"u7zvybf": {
+		"zh-cn": "场景 8: JSON 格式文本",
+		"en": "Scenario 8: JSON formatted text"
+	},
+	"hlghc7f": {
+		"zh-cn": "场景 9: 带表达式的复杂模版",
+		"en": "Scenario 9: Complex template with expressions"
+	},
+	"34qnunh": {
+		"zh-cn": "场景 10: Tab 和特殊空白符",
+		"en": "Scenario 10: Tabs and special whitespace characters"
+	},
+	"ij5d2": {
+		"zh-cn": "标题",
+		"en": ""
+	},
+	"j1ns2": {
+		"zh-cn": "段落",
+		"en": ""
+	},
+	"11pgrb8": {
+		"zh-cn": "第一行：欢迎使用",
+		"en": ""
+	},
+	"hquj28": {
+		"zh-cn": "第二行：这是测试",
+		"en": ""
+	},
+	"8rb2d88": {
+		"zh-cn": "第三行：深度扫描",
+		"en": ""
+	},
+	"dcdra3": {
+		"zh-cn": "城市：",
+		"en": ""
+	},
+	"ub7syhv": {
+		"zh-cn": "场景 1: HTML + 换行符 (应触发 deepScan)",
+		"en": ""
+	},
+	"85rxfxp": {
+		"zh-cn": "场景 2: 多行文本 (应触发 deepScan)",
+		"en": ""
+	},
+	"b46s1mp": {
+		"zh-cn": "场景 3: 简单模版 (不触发 deepScan)",
+		"en": ""
+	},
+	"uwd9mrp": {
+		"zh-cn": "场景 4: 表格结构 (应触发 deepScan)",
+		"en": ""
+	},
+	"tfhc0vp": {
+		"zh-cn": "场景 5: 复杂混合 (应触发 deepScan)",
+		"en": ""
 	}
 }

@@ -9,6 +9,7 @@ import Products from '../views/Products.vue'
 import Contact from '../views/Contact.vue'
 import About from '../views/About.vue'
 import Home from '../views/Home.vue'
+import DeepScanTest from '../views/DeepScanTest.vue'
 import '../resource.js'
 
 const router = createRouter({
@@ -33,6 +34,11 @@ const router = createRouter({
             path: '/contact',
             name: 'Contact',
             component: Contact
+        },
+        {
+            path: '/deepscan-test',
+            name: 'DeepScanTest',
+            component: DeepScanTest
         }
     ]
 })
