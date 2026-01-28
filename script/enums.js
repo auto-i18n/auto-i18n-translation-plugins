@@ -1,6 +1,7 @@
 export const TypeEnum = {
     CORE: 'core',
-    PLUGIN: 'plugin'
+    PLUGIN: 'plugin',
+    WEBSITE: 'website'
 }
 
 export const PluginTypeEnum = {
@@ -13,5 +14,6 @@ export const TypeDirNameMap = {
     [TypeEnum.CORE]: 'autoI18nPluginCore',
     [PluginTypeEnum.WEBPACK]: 'webpackPluginsAutoI18n',
     [PluginTypeEnum.VITE]: 'vitePluginsAutoI18n',
-    [PluginTypeEnum.RSBUILD]: 'rsbuildPluginsAutoI18n'
+    [PluginTypeEnum.RSBUILD]: 'rsbuildPluginsAutoI18n',
+    [TypeEnum.WEBSITE]: 'website'
 }

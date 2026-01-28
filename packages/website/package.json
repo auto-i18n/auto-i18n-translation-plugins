@@ -1,0 +1,35 @@
+{
+  "name": "@auto-i18n/website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Official website for auto-i18n-translation-plugins - Automatic internationalization solution",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000"
+  },
+  "dependencies": {
+    "ant-design-vue": "^4.2.6",
+    "highlight.js": "^11.9.0",
+    "marked": "^12.0.0",
+    "vue": "^3.5.24",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.6.2",
+    "vite": "^4.5.14"
+  },
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "vue",
+    "vite",
+    "webpack",
+    "translation",
+    "babel"
+  ],
+  "author": "wenps, xu-code, Caleb-Xu, Winfans",
+  "license": "MIT"
+}
