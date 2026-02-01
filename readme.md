@@ -361,6 +361,21 @@ translator: new CustomTranslator()
 import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文件会在运行插件时自动生成，默认位于打包配置目录同层的lang文件夹中，其中的index.js就是配置文件
 ```
 
+**生成的文件说明：**
+
+生成的 `lang/index.js` 文件包含以下全局函数和对象：
+
+- `window.$t(key, defaultValue, namespace)` - 翻译函数
+- `window.$$t(value)` - 简单翻译函数（直接返回原值）
+- `window.$deepScan(value)` - 深度扫描标记函数（仅在 `deepScan: true` 时有效）
+- `window.$iS(template, args)` - 插值字符串函数（支持 `${0}` 或 `\${0}` 格式的占位符）
+- `window.$changeLang(lang)` - 语言切换函数
+- `window.langMap` - 语言映射对象
+
+**兼容性保证：**
+
+从 v1.1.17 开始，所有全局函数和对象都通过智能 fallback 机制挂载，完全兼容低版本浏览器（包括 IE 11）。
+
 ---
 
 ## ⚙️ 配置参数说明
@@ -413,6 +428,59 @@ import '../lang/index.js' // 📍 必须在入口文件中第一行引入，文�
 ```
 
 这样就只会翻译`你好`这个字符串，而不会翻译整个字符串。
+
+### 🔥 $deepScan 函数的使用
+
+在启用 `deepScan: true` 后，插件会自动生成 `$deepScan` 全局函数。此函数用于标记需要深度扫描的模板字符串：
+
+```js
+// 使用 $deepScan 包裹模板字符串
+const template = $deepScan(`
+    <div class="container">
+        <h1>欢迎使用</h1>
+        <p>这是一个测试</p>
+    </div>
+`)
+
+// 插件会自动转换为：
+const template = `
+    <div class="container">
+        <h1>${$t('欢迎使用')}</h1>
+        <p>${$t('这是一个测试')}</p>
+    </div>
+`
+```
+
+**注意事项：**
+- `$deepScan` 在运行时仅返回原始值，不做任何处理
+- 主要用于在编译时告诉插件需要对该字符串进行深度扫描
+- 只在 `deepScan: true` 配置下生效
+
+---
+
+## 🌐 全局对象兼容性说明
+
+从 v1.1.17 版本开始，生成的翻译配置文件 (`lang/index.js`) 已经完全兼容低版本浏览器，包括 IE 11。
+
+### 兼容性机制
+
+插件使用以下 fallback 优先级获取全局对象：
+
+1. `globalThis` - 现代浏览器（ES2020+）
+2. `window` - 浏览器环境（兼容 IE 11+）
+3. `global` - Node.js 环境
+4. `self` - Web Workers 环境
+
+### 支持的浏览器版本
+
+- ✅ Chrome 49+
+- ✅ Firefox 52+
+- ✅ Safari 10+
+- ✅ Edge 12+
+- ✅ IE 11
+- ✅ 所有现代浏览器
+
+**无需额外配置**，生成的文件会自动处理兼容性问题。
 
 ---
 
@@ -519,6 +587,12 @@ const HelloWorld: React.FC<HelloWorldProps> = ({ name = 'World' }) => {
 原始作者：wenps、xu-code、Caleb-Xu、Winfans
 
 ## 更新日志
+
+### v1.1.17 (最新版本)
+
+-   **新增全局对象兼容性增强**：生成的翻译配置文件现在支持低版本浏览器（IE 11+），通过 `globalThis` → `window` → `global` → `self` 的 fallback 机制确保兼容性
+-   **优化 deepScan 功能**：新增 `$deepScan` 全局函数，用于标记模板字符串中需要深度扫描的部分，提升翻译精准度
+-   **改进代码结构**：优化翻译函数生成逻辑，所有代码封装在 IIFE 中，避免全局作用域污染
 
 ### v1.1.16 (推荐版本)
 

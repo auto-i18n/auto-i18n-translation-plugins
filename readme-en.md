@@ -358,6 +358,21 @@ Please import the language configuration file at the top of the **project entry 
 import '../lang/index.js' // 📍 Must be imported on the first line of the entry file. The file will be automatically generated when the plugin is run. By default, it is located in the 'lang' folder at the same level as the packaging configuration directory. The 'index.js' inside is the configuration file.
 ```
 
+**Generated File Description:**
+
+The generated `lang/index.js` file contains the following global functions and objects:
+
+- `window.$t(key, defaultValue, namespace)` - Translation function
+- `window.$$t(value)` - Simple translation function (returns original value)
+- `window.$deepScan(value)` - Deep scan marker function (only effective when `deepScan: true`)
+- `window.$iS(template, args)` - Interpolation string function (supports `${0}` or `\${0}` format placeholders)
+- `window.$changeLang(lang)` - Language switching function
+- `window.langMap` - Language mapping object
+
+**Compatibility Guarantee:**
+
+Starting from v1.1.17, all global functions and objects are mounted through an intelligent fallback mechanism, fully compatible with legacy browsers (including IE 11).
+
 ---
 
 ## ⚙️ Configuration Parameters
@@ -411,6 +426,59 @@ Since there's Chinese text, the whole string would be included, potentially caus
 ```
 
 Now only '你好' gets translated, not the entire string.
+
+### 🔥 Using the $deepScan Function
+
+When `deepScan: true` is enabled, the plugin automatically generates a `$deepScan` global function. This function marks template strings that need deep scanning:
+
+```js
+// Wrap template strings with $deepScan
+const template = $deepScan(`
+    <div class="container">
+        <h1>Welcome</h1>
+        <p>This is a test</p>
+    </div>
+`)
+
+// The plugin automatically converts it to:
+const template = `
+    <div class="container">
+        <h1>${$t('Welcome')}</h1>
+        <p>${$t('This is a test')}</p>
+    </div>
+`
+```
+
+**Notes:**
+- `$deepScan` only returns the original value at runtime without any processing
+- Primarily used to tell the plugin at compile time that this string needs deep scanning
+- Only takes effect when `deepScan: true` is configured
+
+---
+
+## 🌐 Global Object Compatibility
+
+Starting from v1.1.17, the generated translation config file (`lang/index.js`) is fully compatible with legacy browsers, including IE 11.
+
+### Compatibility Mechanism
+
+The plugin uses the following fallback priority to obtain the global object:
+
+1. `globalThis` - Modern browsers (ES2020+)
+2. `window` - Browser environment (IE 11+ compatible)
+3. `global` - Node.js environment
+4. `self` - Web Workers environment
+
+### Supported Browser Versions
+
+- ✅ Chrome 49+
+- ✅ Firefox 52+
+- ✅ Safari 10+
+- ✅ Edge 12+
+- ✅ IE 11
+- ✅ All modern browsers
+
+**No additional configuration needed** - the generated files automatically handle compatibility.
 
 ---
 
@@ -514,6 +582,12 @@ Since v1.0.5, simply import the generated `index.js` in your entry file - no nee
 Original authors: wenps, xu-code, Caleb-Xu, Winfans
 
 ## Changelog
+
+### v1.1.17 (Latest Version)
+
+-   **Enhanced Global Object Compatibility**: Generated translation config files now support legacy browsers (IE 11+) through a fallback mechanism: `globalThis` → `window` → `global` → `self`
+-   **Optimized deepScan Feature**: Added `$deepScan` global function for marking template string parts that need deep scanning, improving translation accuracy
+-   **Improved Code Structure**: Optimized translation function generation logic, all code wrapped in IIFE to prevent global scope pollution
 
 ### v1.1.16 (Recommended Version)
 
