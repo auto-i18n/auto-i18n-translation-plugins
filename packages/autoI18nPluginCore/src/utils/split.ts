@@ -31,8 +31,6 @@ import { baseUtils } from '.'
  * @returns 处理后的字符串数组
  */
 export function splitByRegex(str: string, separatorRegex: RegExp): string[] {
-    if (str.includes('\n')) console.log(str, separatorRegex)
-
     // 定义标点符号的正则表达式
     const punctuationRegex = /[，。？！《》,.．：!?""''；'"、0-9\n\r\t\v\f]/
     // 创建一个新的正则表达式，用于分割字符串

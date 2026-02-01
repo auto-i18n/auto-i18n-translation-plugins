@@ -11,6 +11,7 @@ import path from 'path'
 
 const i18nPlugin = vitePluginsAutoI18n({
     targetLangList: ['en'],
+    deepScan: true,
     // translator: new YoudaoTranslator({
     //     appId: '',
     //     appKey: '',

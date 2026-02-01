@@ -38,6 +38,13 @@
 export default {
     data() {
         return {
+            c: `// 默认使用 $t
+translateKey: '$t'
+// 生成代码: $t('hash123', '你好', 'lang')
+
+// 自定义函数名
+translateKey: '$translate'2213123
+// 生成代码: $translate('hash123', '你好', 'lang')`,
             logoUrl: 'https://www.antdv.com/assets/logo.1ef800a8.svg',
             xx: {
                 name: 'element-tag-marker',

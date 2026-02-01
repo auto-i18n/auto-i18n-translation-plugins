@@ -141,6 +141,14 @@ let cc = '12312'
 let c = `测试什么123${cc}`
 console.log(c)
 
+let c11 = `// 默认使用 $t
+translateKey: '$t'
+// 生成代码: $t('hash123', '你好', 'lang')
+
+// 自定义函数名
+translateKey: '$translate'2213123
+// 生成代码: $translate('hash123', '你好', 'lang')`
+
 let cc1 = window.$iS('我的${1}小山的名字是${0}', ['小山', '朋友'])
 console.log(cc1)
 
