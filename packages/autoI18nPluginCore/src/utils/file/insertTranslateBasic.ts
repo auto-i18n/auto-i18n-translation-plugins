@@ -43,7 +43,7 @@ function generateImportStatement(mode: string): string {
 function generateHelperFunction(mode: string): string {
     if (mode === 'merged') {
         return `// 定义从JSON文件中获取指定键的语言对象的方法（合并模式）
-    globalThis._getJSONKey = function (key, insertJSONObj = undefined) {
+    _global._getJSONKey = function (key, insertJSONObj = undefined) {
         // 获取JSON对象
         const JSONObj = insertJSONObj;
         // 初始化语言对象
@@ -76,7 +76,7 @@ function generateHelperFunction(mode: string): string {
     const _langFileMap = {
         ${langFileMap} || {}
     };
-    globalThis._getLangFromFile = function (langCode) {
+    _global._getLangFromFile = function (langCode) {
         return _langFileMap[langCode] || {};
     };`
     }
@@ -96,23 +96,35 @@ function generateLangMapList(
     return langs
         .map(item => [item.replace('-', ''), item])
         .map(([langKey, langCode]) => {
-            const globalLangCheck = `(globalThis && globalThis.${namespace} && globalThis.${namespace}.${langKey}) ? globalThis.${namespace}.${langKey}`
+            const globalLangCheck = `(_global && _global.${namespace} && _global.${namespace}.${langKey}) ? _global.${namespace}.${langKey}`
 
             if (mode === 'merged') {
-                return `'${langKey}': ${globalLangCheck} : globalThis._getJSONKey('${langCode}', langJSON)`
+                return `'${langKey}': ${globalLangCheck} : _global._getJSONKey('${langCode}', langJSON)`
             } else {
-                return `'${langKey}': ${globalLangCheck} : globalThis._getLangFromFile('${langCode}')`
+                return `'${langKey}': ${globalLangCheck} : _global._getLangFromFile('${langCode}')`
             }
         })
         .join(',\n')
 }
 
 /**
+ * @description: 生成全局对象获取器
+ */
+function generateGlobalGetter(): string {
+    return `const _global = (function() {
+        if (typeof globalThis !== 'undefined') return globalThis;
+        if (typeof window !== 'undefined') return window;
+        if (typeof global !== 'undefined') return global;
+        if (typeof self !== 'undefined') return self;
+        return {};
+    })();`
+}
+
+/**
  * @description: 生成核心翻译函数
  */
 function generateCoreFunctions(translateKey: string): string {
-    return `(function () {
-    // 定义翻译函数
+    return `// 定义翻译函数
     let ${translateKey} = function (key, val, nameSpace) {
       // 获取指定命名空间下的语言包
       const langPackage = ${translateKey}[nameSpace];
@@ -123,10 +135,10 @@ function generateCoreFunctions(translateKey: string): string {
     let $${translateKey} = function (val) {
       return val;
     };
-    globalThis.$deepScan = function (val) {
+    _global.$deepScan = function (val) {
       return val;
     };
-    globalThis.$iS = function (val, args) {
+    _global.$iS = function (val, args) {
         // 如果参数不是字符串或数组，直接返回原值
         if (typeof val !== 'string' || !Array.isArray(args)) {
             return val;
@@ -149,10 +161,10 @@ function generateCoreFunctions(translateKey: string): string {
       // 将指定命名空间下的语言包设置为传入的locale
       ${translateKey}[nameSpace] = locale || {};
     };
-    // 将翻译函数挂载到globalThis对象上，如果已经存在则使用已有的
-    globalThis.${translateKey} = globalThis.${translateKey} || ${translateKey};
-    // 将简单翻译函数挂载到globalThis对象上
-    globalThis.$${translateKey} = $${translateKey};`
+    // 将翻译函数挂载到全局对象上，如果已经存在则使用已有的
+    _global.${translateKey} = _global.${translateKey} || ${translateKey};
+    // 将简单翻译函数挂载到全局对象上
+    _global.$${translateKey} = $${translateKey};`
 }
 
 /**
@@ -168,26 +180,26 @@ function generateLanguageInitialization(
     const langMap = {
         {{LANG_MAP_LIST}}
     };
-    globalThis.langMap = langMap;
+    _global.langMap = langMap;
     // 存储语言是否存在
-    // 判断 globalThis.localStorage.getItem 是否为函数
+    // 判断 _global.localStorage.getItem 是否为函数
     const isFunction = (fn) => {
         return typeof fn === 'function';
     };
     
-    const withStorageLang = isFunction && globalThis && globalThis.localStorage && 
-    isFunction(globalThis.localStorage.getItem) && globalThis.localStorage.getItem('${namespace}');
-    const withStorageCommonLang = isFunction && globalThis && globalThis.localStorage && 
-    isFunction(globalThis.localStorage.getItem) && globalThis.localStorage.getItem('${commonTranslateKey}');
+    const withStorageLang = isFunction && _global && _global.localStorage && 
+    isFunction(_global.localStorage.getItem) && _global.localStorage.getItem('${namespace}');
+    const withStorageCommonLang = isFunction && _global && _global.localStorage && 
+    isFunction(_global.localStorage.getItem) && _global.localStorage.getItem('${commonTranslateKey}');
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
-    const commonLang = withStorageCommonLang ? globalThis.localStorage.getItem('${commonTranslateKey}') : '';
+    const commonLang = withStorageCommonLang ? _global.localStorage.getItem('${commonTranslateKey}') : '';
     // 从本地存储中获取当前语言，如果不存在则使用源语言
-    const baseLang = withStorageLang ? globalThis.localStorage.getItem('${namespace}') : '${originLang.replace('-', '')}';
+    const baseLang = withStorageLang ? _global.localStorage.getItem('${namespace}') : '${originLang.replace('-', '')}';
     const lang = commonLang ? commonLang : baseLang;
     // 根据当前语言设置翻译函数的语言包
-    globalThis.${translateKey}.locale(globalThis.langMap[lang], '${namespace}');
-    globalThis.$changeLang = (lang) => {
-        globalThis.${translateKey}.locale(globalThis.langMap[lang], '${namespace}');
+    _global.${translateKey}.locale(_global.langMap[lang], '${namespace}');
+    _global.$changeLang = (lang) => {
+        _global.${translateKey}.locale(_global.langMap[lang], '${namespace}');
     };`
 }
 
@@ -205,8 +217,8 @@ function generateTranslateBasicFnText(): string {
     } = option
     const mode = languageJsonMode || 'merged'
 
-    // 生成各个部分
     const importStatement = generateImportStatement(mode)
+    const globalGetter = generateGlobalGetter()
     const coreFunctions = generateCoreFunctions(translateKey)
     const helperFunction = generateHelperFunction(mode)
     const langMapList = generateLangMapList(targetLangList, originLang, namespace, mode)
@@ -217,13 +229,14 @@ function generateTranslateBasicFnText(): string {
         originLang
     )
 
-    // 组合完整文本
     return `
     ${importStatement}
+    (function () {
+    ${globalGetter}
     ${coreFunctions}
     ${helperFunction}
-    })();
     ${languageInit.replace('{{LANG_MAP_LIST}}', langMapList)}
+    })();
   `
 }
 

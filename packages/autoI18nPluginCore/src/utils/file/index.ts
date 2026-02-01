@@ -329,17 +329,19 @@ export function buildSetLangConfigToIndexFile() {
                             console.error('❌构建主文件不存在，翻译配置无法写入')
                             return
                         }
+                        const globalGetter = `(function(){if(typeof globalThis!=='undefined')return globalThis;if(typeof window!=='undefined')return window;if(typeof global!=='undefined')return global;if(typeof self!=='undefined')return self;return{};})()`
+                        
                         let buildLangConfigString = ''
                         Object.keys(langObjMap).forEach(item => {
                             buildLangConfigString =
                                 buildLangConfigString +
-                                `globalThis['${option.namespace}']['${item}']=${JSON.stringify(langObjMap[item])};`
+                                `_g['${option.namespace}']['${item}']=${JSON.stringify(langObjMap[item])};`
                         })
                         try {
                             // 翻译配置写入主文件
                             fs.writeFileSync(
                                 filePath,
-                                `globalThis['${option.namespace}']={};${buildLangConfigString}` +
+                                `(function(){var _g=${globalGetter};_g['${option.namespace}']={};${buildLangConfigString}})();` +
                                     data
                             )
                             console.info('恭喜：翻译配置写入构建主文件成功🌟🌟🌟')
